@@ -21,19 +21,5 @@ out/
 .factorypath
 HELP.md
 
-node_modules/
-dist/
-tmp/
-.angular/
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-.pnpm-debug.log*
 
-.env
-.env.local
-*.properties
-!src/main/resources/application.properties
-
-.DS_Store
 desktop.ini
