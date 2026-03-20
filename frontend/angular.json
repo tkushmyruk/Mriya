@@ -1,8 +1,9 @@
-git add frontend{
+{
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "version": 1,
   "cli": {
-    "packageManager": "npm"
+    "packageManager": "npm",
+    "analytics": "037eb3ed-8a7a-4b1f-ac02-aa9cc9c004c6"
   },
   "newProjectRoot": "projects",
   "projects": {
