@@ -27,5 +27,20 @@ export class ProfileComponent implements OnInit {
     );
   }
 
+  onFileSelected(event: any) {
+    const file: File = event.target.files[0];
+
+    if (file) {
+      this.profileService.uploadAvatar(file).subscribe({
+        next: (response) => {
+          if (this.profile) {
+            this.profile.avatarUrl = response.url;
+          }
+        },
+        error: (err) => console.error('Error occured', err)
+      });
+    }
+  }
+
 
 }

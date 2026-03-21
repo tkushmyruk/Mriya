@@ -11,7 +11,13 @@ export class ProfileService {
 
   public load(): Observable<ProfileModel> {
     return this.httpClient.get<ProfileModel>(
-      `http://localhost:8080/profile`
+      `http://localhost:8080/profile/1`
     );
+  }
+
+  uploadAvatar(file: File): Observable<any> {
+    const formData = new FormData();
+    formData.append('file', file);
+    return this.httpClient.post(`http://localhost:8080/profile/1/upload-avatar`, formData);
   }
 }
