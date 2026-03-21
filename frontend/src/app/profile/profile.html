@@ -1,8 +1,20 @@
 <div class="profile-container">
+    <header class="profile-header">
+      <div class="avatar-wrapper">
+        <img [src]="profile?.avatarUrl || 'avatar-default.png'" class="profile-avatar" alt="Аватар">
+      </div>
+      <h2 class="user-name">{{ profile?.firstName }} {{ profile?.lastName }}</h2>
+    </header>
+
+  <div class="upload-overlay">
+    <label for="file-upload" class="custom-file-upload">
+      <span>Змінити фото</span>
+    </label>
+    <input id="file-upload" type="file" (change)="onFileSelected($event)" accept="image/*" style="display: none;">
+  </div>
   <nav-bar></nav-bar>
 
   <div class="content-area">
-    <h2>Мій Профіль</h2>
     <router-outlet></router-outlet>
   </div>
 </div>

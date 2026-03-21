@@ -1,3 +1,6 @@
 export interface ProfileModel {
-  profileName: string;
+  id: number;
+  firstName: string;
+  lastName: string;
+  avatarUrl: string;
 }
