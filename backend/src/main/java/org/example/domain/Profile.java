@@ -1,34 +1,32 @@
 package org.example.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
 
+@Builder
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "user_profile")
+@Table(name = "PROFILE_TBL")
 public class Profile {
-    @Id
-    @Column(name = "user_id")
-    public Integer userId;
-    @Column(name = "first_name")
+    @Id()
+    @Column(name = "ID")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    public Integer id;
+    @Column(name = "FIRST_NAME")
     public String firstName;
-    @Column(name = "last_name")
+    @Column(name = "LAST_NAME")
     public String lastName;
-    @Column(name = "avatar_url")
-    public String avatarUrl;
-    @Column(name = "email")
-    public String email;
-    @Column(name = "created_at")
+    @Column(name = "PROFILE_PHOTO")
+    public String profilePhoto;
+    @Column(name = "CREATE_DATE")
     public Date createdAt;
 }

@@ -11,7 +11,7 @@ export class ProfileService {
 
   public load(): Observable<ProfileModel> {
     return this.httpClient.get<ProfileModel>(
-      `http://localhost:8080/profile/1`
+      `http://localhost:8080/profile/8`
     );
   }
 

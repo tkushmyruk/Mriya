@@ -12,7 +12,11 @@ public class ProfileService {
     private final ProfileRepository profileRepository;
 
     public Profile getProfileByUserId(Integer userId) {
-        return profileRepository.findByUserId(userId);
+        return profileRepository.findById(userId).get();
+    }
+
+    public void saveProfile(Profile profile) {
+        profileRepository.save(profile);
     }
 
 }
