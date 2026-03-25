@@ -1,15 +1,14 @@
 package org.example.service;
 
 import lombok.AllArgsConstructor;
-import org.example.domain.Profile;
-import org.example.domain.Role;
-import org.example.domain.User;
+import org.example.domain.sql.Profile;
+import org.example.domain.sql.Role;
+import org.example.domain.sql.User;
 import org.example.dto.AuthenticationRequest;
 import org.example.dto.RegisterRequest;
-import org.example.repository.UserRepository;
+import org.example.repository.sql.UserRepository;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.parameters.P;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

@@ -1,0 +1,20 @@
+<div class="post-creator">
+  <textarea [(ngModel)]="newPostContent" placeholder="Що нового?"></textarea>
+  <button (click)="submitPost()" [disabled]="!newPostContent">Опублікувати</button>
+</div>
+
+<div class="posts-feed">
+  <div *ngFor="let post of posts" class="post-card">
+    <div class="post-header">
+      <span>Автор: {{ post.authorId }}</span>
+      <small>{{ post.createdAt | date:'short' }}</small>
+    </div>
+    <div class="post-content">
+      {{ post.content }}
+    </div>
+    <div class="post-footer">
+      <span>❤️ {{ post.likesCount }}</span>
+      <span>💬 {{ post.commentsCount }}</span>
+    </div>
+  </div>
+</div>

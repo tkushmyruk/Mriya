@@ -1,4 +1,4 @@
-package org.example.domain;
+package org.example.domain.sql;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

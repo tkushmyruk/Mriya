@@ -3,12 +3,14 @@ import {ProfileService} from './service/profile-service';
 import {ProfileModel} from './model/profile-model';
 import {NavBar} from '../nav-bar/nav-bar';
 import {RouterOutlet} from '@angular/router';
+import {PostListComponent} from '../components/post-list/post-list';
 
 @Component({
   selector: 'app-profile',
   imports: [
     NavBar,
-    RouterOutlet
+    RouterOutlet,
+    PostListComponent
   ],
   templateUrl: './profile.html',
   styleUrl: './profile.css',
