@@ -4,11 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.example.domain.Profile;
 import org.example.service.MediaStorageService;
 import org.example.service.ProfileService;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Map;
 
 @RestController
 @RequestMapping("/profile/{userId}")
