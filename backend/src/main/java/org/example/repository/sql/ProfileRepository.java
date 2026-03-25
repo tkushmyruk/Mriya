@@ -1,6 +1,6 @@
-package org.example.repository;
+package org.example.repository.sql;
 
-import org.example.domain.Profile;
+import org.example.domain.sql.Profile;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

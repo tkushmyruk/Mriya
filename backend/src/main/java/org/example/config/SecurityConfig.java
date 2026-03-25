@@ -1,7 +1,7 @@
 package org.example.config;
 
 import lombok.AllArgsConstructor;
-import org.example.repository.UserRepository;
+import org.example.repository.sql.UserRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -36,7 +36,7 @@ public class SecurityConfig {
                 }))
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/users/auth/**").permitAll()
+                        .requestMatchers("/**").permitAll()
                         .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )

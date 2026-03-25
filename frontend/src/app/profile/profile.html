@@ -6,6 +6,14 @@
       <h2 class="user-name">{{ profile?.firstName }} {{ profile?.lastName }}</h2>
     </header>
 
+  <div>
+    <app-post-list
+      [ownerId]="8"
+      [ownerType]="'PROFILE'">
+    </app-post-list>
+  </div>
+
+
   <div class="upload-overlay">
     <label for="file-upload" class="custom-file-upload">
       <span>Змінити фото</span>

@@ -1,4 +1,4 @@
-package org.example.domain;
+package org.example.domain.sql;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

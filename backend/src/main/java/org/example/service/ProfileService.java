@@ -1,8 +1,8 @@
 package org.example.service;
 
 import lombok.RequiredArgsConstructor;
-import org.example.domain.Profile;
-import org.example.repository.ProfileRepository;
+import org.example.domain.sql.Profile;
+import org.example.repository.sql.ProfileRepository;
 import org.springframework.stereotype.Service;
 
 @Service
