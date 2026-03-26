@@ -1,28 +1,37 @@
-<div class="profile-container">
+<div class="profile-page-wrapper" *ngIf="profile">
+  <div class="profile-container">
+
     <header class="profile-header">
       <div class="avatar-wrapper">
-        <img [src]="profile?.avatarUrl || 'avatar-default.png'" class="profile-avatar" alt="Аватар">
+        <img [src]="currentAvatar" class="profile-avatar" alt="Аватар">
+
+        <div *ngIf="isOwner" class="upload-overlay">
+          <label for="file-upload" class="custom-file-upload">
+            <span>Змінити фото</span>
+          </label>
+          <input id="file-upload" type="file" (change)="onFileSelected($event)" accept="image/*" style="display: none;">
+        </div>
       </div>
-      <h2 class="user-name">{{ profile?.firstName }} {{ profile?.lastName }}</h2>
+
+      <h2 class="user-name">{{ profile.firstName }} {{ profile.lastName }}</h2>
     </header>
 
-  <div>
-    <app-post-list
-      [ownerId]="8"
-      [ownerType]="'PROFILE'">
-    </app-post-list>
+    <main class="profile-content">
+      <div class="posts-section">
+        <app-post-list
+          *ngIf="profile.id"
+          [ownerId]="profile!.id"
+          [ownerType]="'PROFILE'"
+          [canPost]="isOwner">
+        </app-post-list>
+      </div>
+
+      <div class="content-area">
+        <router-outlet></router-outlet>
+      </div>
+    </main>
+
   </div>
 
-
-  <div class="upload-overlay">
-    <label for="file-upload" class="custom-file-upload">
-      <span>Змінити фото</span>
-    </label>
-    <input id="file-upload" type="file" (change)="onFileSelected($event)" accept="image/*" style="display: none;">
-  </div>
   <nav-bar></nav-bar>
-
-  <div class="content-area">
-    <router-outlet></router-outlet>
-  </div>
 </div>

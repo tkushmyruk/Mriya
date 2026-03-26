@@ -1,30 +1,88 @@
+/* Головна обгортка для центрування */
+.profile-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
 .profile-header {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  width: 100%;
-  padding: 20px 0;
-  background-color: #f8f9fa;
-  border-bottom: 1px solid #dee2e6;
+  padding: 30px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
 }
 
+/* Магія з аватаром */
 .avatar-wrapper {
+  position: relative; /* Щоб оверлей був поверх фото */
+  width: 150px;
+  height: 150px;
   margin-bottom: 15px;
+  cursor: pointer;
 }
 
 .profile-avatar {
-  width: 150px;
-  height: 150px;
+  width: 100%;
+  height: 100%;
   border-radius: 50%;
   object-fit: cover;
   border: 4px solid #fff;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  transition: filter 0.3s ease;
+}
+
+/* Оверлей "Змінити фото" з'являється при наведенні */
+.upload-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0; /* Схований за замовчуванням */
+  transition: opacity 0.3s ease;
+}
+
+.avatar-wrapper:hover .upload-overlay {
+  opacity: 1; /* Показуємо при наведенні */
+}
+
+.avatar-wrapper:hover .profile-avatar {
+  filter: blur(2px);
+}
+
+.custom-file-upload {
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+  text-align: center;
+  cursor: pointer;
+  padding: 10px;
 }
 
 .user-name {
-  margin: 0;
-  font-size: 22px;
-  font-weight: 600;
-  color: #212529;
+  margin: 10px 0 0;
+  font-size: 26px;
+  font-weight: 700;
+  color: #1a1a1b;
+}
+
+.profile-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+nav-bar {
+  display: block;
+  margin-top: 50px;
 }

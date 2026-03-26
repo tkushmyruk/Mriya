@@ -21,6 +21,8 @@ public class Profile {
     @Column(name = "ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Integer id;
+    @Column(name = "USER_ID")
+    public Integer userId;
     @Column(name = "FIRST_NAME")
     public String firstName;
     @Column(name = "LAST_NAME")

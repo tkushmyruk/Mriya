@@ -1,6 +1,7 @@
 export interface ProfileModel {
   id: number;
+  userId: number;
   firstName: string;
   lastName: string;
-  avatarUrl: string;
+  profilePhoto: string;
 }

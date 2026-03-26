@@ -20,6 +20,6 @@ public class UserController {
 
     @PostMapping("/auth/authenticate")
     public AuthenticationResponse authenticate(@RequestBody AuthenticationRequest request) {
-        return new AuthenticationResponse(userService.authenticate(request));
+        return userService.authenticate(request);
     }
 }

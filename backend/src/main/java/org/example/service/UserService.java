@@ -5,6 +5,7 @@ import org.example.domain.sql.Profile;
 import org.example.domain.sql.Role;
 import org.example.domain.sql.User;
 import org.example.dto.AuthenticationRequest;
+import org.example.dto.AuthenticationResponse;
 import org.example.dto.RegisterRequest;
 import org.example.repository.sql.UserRepository;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -43,12 +44,12 @@ public class UserService {
         return jwtToken;
     }
 
-    public String authenticate(AuthenticationRequest request) {
+    public AuthenticationResponse authenticate(AuthenticationRequest request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
         );
         var user = repository.findByEmail(request.getEmail()).orElseThrow();
         var jwtToken = jwtService.generateToken(user);
-        return jwtToken;
+        return new AuthenticationResponse(jwtToken, user.getId());
     }
 }
