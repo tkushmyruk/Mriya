@@ -1,0 +1,20 @@
+<div class="comments-container">
+  <div class="comments-list" *ngIf="comments.length > 0">
+    <div class="comment-item" *ngFor="let comment of comments">
+      <div class="comment-bubble">
+        <span class="author">{{ comment.authorName }}</span>
+        <p class="text">{{ comment.text }}</p>
+      </div>
+      <span class="date">{{ comment.createDate | date:'short' }}</span>
+    </div>
+  </div>
+
+  <div class="add-comment-form">
+    <input
+      type="text"
+      [(ngModel)]="newCommentText"
+      placeholder="Напишіть коментар..."
+      (keyup.enter)="submitComment()">
+    <button (click)="submitComment()" [disabled]="!newCommentText.trim()">➤</button>
+  </div>
+</div>

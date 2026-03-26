@@ -1,8 +1,9 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {PostService} from '../services/post.service';
 import {OwnerType, Post} from '../models/post.model';
-import {DatePipe, NgForOf} from '@angular/common';
+import {CommonModule, DatePipe, NgForOf} from '@angular/common';
 import {FormsModule} from '@angular/forms';
+import {PostCommentsComponent} from '../post-comments/post-comments';
 
 @Component({
   selector: 'app-post-list',
@@ -10,6 +11,8 @@ import {FormsModule} from '@angular/forms';
   imports: [
     DatePipe,
     FormsModule,
+    CommonModule,
+    PostCommentsComponent,
     NgForOf
   ],
   styleUrls: ['./post-list.css']

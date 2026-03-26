@@ -8,5 +8,6 @@ export interface Post {
   content: string;
   likesCount: number;
   commentsCount: number;
+  showComments?: boolean;
   createdAt: Date;
 }
