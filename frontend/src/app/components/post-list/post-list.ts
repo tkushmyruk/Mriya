@@ -17,6 +17,7 @@ import {FormsModule} from '@angular/forms';
 export class PostListComponent implements OnChanges {
   @Input() ownerId!: number;
   @Input() ownerType!: OwnerType;
+  @Input() canPost: boolean = false;
 
   posts: Post[] = [];
   newPostContent: string = '';
