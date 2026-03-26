@@ -6,6 +6,10 @@ import org.example.domain.nosql.Post;
 import org.example.domain.nosql.PostStatus;
 import org.example.dto.PostCreateRequest;
 import org.example.repository.nosql.PostRepository;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -15,6 +19,7 @@ import java.util.List;
 public class PostService {
 
     private final PostRepository postRepository;
+    private final MongoTemplate mongoTemplate;
     // private final KafkaTemplate<String, PostEvent> kafkaTemplate; // Додамо пізніше
 
     public Post createPost(PostCreateRequest request) {
@@ -36,5 +41,11 @@ public class PostService {
 
     public List<Post> getPostsByOwner(Long ownerId, OwnerType ownerType) {
         return postRepository.findByOwnerIdAndOwnerType(ownerId, ownerType);
+    }
+
+    public void incrementCommentsCount(String postId) {
+        Query query = new Query(Criteria.where("id").is(postId));
+        Update update = new Update().inc("commentsCount", 1); // Збільшує на 1
+        mongoTemplate.updateFirst(query, update, Post.class);
     }
 }

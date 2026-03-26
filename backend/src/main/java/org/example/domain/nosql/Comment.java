@@ -1,6 +1,7 @@
 package org.example.domain.nosql;
 
 import jakarta.persistence.Id;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.mongodb.core.index.Indexed;
@@ -11,6 +12,7 @@ import java.time.LocalDateTime;
 @Document(collection = "comments")
 @Getter
 @Setter
+@Builder
 public class Comment {
     @Id
     private String id;
@@ -18,11 +20,11 @@ public class Comment {
     @Indexed
     private String postId;
 
-    private Long authorId;
+    private Integer authorId;
+
+    private String authorName;
 
     private String text;
 
-    private String parentCommentId;
-
-    private LocalDateTime createDate = LocalDateTime.now();
+    private LocalDateTime createDate;
 }
