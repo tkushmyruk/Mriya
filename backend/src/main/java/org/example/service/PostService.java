@@ -6,6 +6,7 @@ import org.example.domain.nosql.Post;
 import org.example.domain.nosql.PostStatus;
 import org.example.dto.PostCreateRequest;
 import org.example.repository.nosql.PostRepository;
+import org.example.repository.sql.UserRepository;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -20,6 +21,7 @@ public class PostService {
 
     private final PostRepository postRepository;
     private final MongoTemplate mongoTemplate;
+    private final UserRepository userRepository;
     // private final KafkaTemplate<String, PostEvent> kafkaTemplate; // Додамо пізніше
 
     public Post createPost(PostCreateRequest request) {
@@ -47,5 +49,26 @@ public class PostService {
         Query query = new Query(Criteria.where("id").is(postId));
         Update update = new Update().inc("commentsCount", 1); // Збільшує на 1
         mongoTemplate.updateFirst(query, update, Post.class);
+    }
+
+    public Post toggleLike(String postId, String email) {
+        int userId = userRepository.findByEmail(email).get().getId();
+        Query query = new Query(Criteria.where("id").is(postId));
+        Post post = mongoTemplate.findOne(query, Post.class);
+
+        if (post == null) throw new RuntimeException("Post not found");
+
+        Update update = new Update();
+
+        if (post.getLikedBy() != null && post.getLikedBy().contains(userId)) {
+            update.pull("likedBy", userId);
+            update.inc("likesCount", -1);
+        } else {
+            update.push("likedBy", userId);
+            update.inc("likesCount", 1);
+        }
+
+        mongoTemplate.updateFirst(query, update, Post.class);
+        return mongoTemplate.findOne(query, Post.class);
     }
 }

@@ -10,6 +10,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 @Document(collection = "posts")
 @Getter
@@ -29,6 +30,8 @@ public class Post {
     private PostStatus postStatus;
 
     private List<String> mediaUrls;
+    private Set<Integer> likedBy;
+    private int likeCount;
 
     private List<String> tags;
     private Long ownerId;

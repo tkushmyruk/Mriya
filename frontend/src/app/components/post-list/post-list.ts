@@ -34,7 +34,6 @@ export class PostListComponent implements OnChanges {
   }
 
   loadPosts(): void {
-    console.log("PostListComponent: Loading posts for ownerId", this.ownerId, "and ownerType", this.ownerType);
     this.postService.getPosts(this.ownerId, this.ownerType).subscribe(data => {
       this.posts = data;
     });
@@ -51,6 +50,22 @@ export class PostListComponent implements OnChanges {
     this.postService.createPost(postData).subscribe(savedPost => {
       this.posts.unshift(savedPost);
       this.newPostContent = '';
+    });
+  }
+
+  isLiked(post: any): boolean {
+    const currentUserId = parseInt(localStorage.getItem('userId') || '0', 10);
+    return post.likedBy?.includes(currentUserId);
+  }
+
+  likePost(post: any) {
+    this.postService.toggleLike(post.id).subscribe({
+      next: (updatedPost) => {
+        Object.assign(post, updatedPost);
+      },
+      error: (err) => {
+        console.error('Помилка при лайку:', err);
+      }
     });
   }
 }
