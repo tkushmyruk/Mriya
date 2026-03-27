@@ -37,6 +37,7 @@ public class PostController {
     public List<Post> getPosts(@PathVariable OwnerType ownerType, @PathVariable Long ownerId) {
         return postService.getPostsByOwner(ownerId, ownerType);
     }
+
     @PostMapping("/{postId}/comments")
     public ResponseEntity<Comment> addComment(
             @PathVariable String postId,
@@ -52,5 +53,11 @@ public class PostController {
     @GetMapping("/{postId}/comments")
     public ResponseEntity<List<Comment>> getComments(@PathVariable String postId) {
         return ResponseEntity.ok(commentService.getCommentsByPostId(postId));
+    }
+
+    @PostMapping("/{postId}/like")
+    public ResponseEntity<Post> toggleLike(@PathVariable String postId, Principal principal) {
+        String email = principal.getName();
+        return ResponseEntity.ok(postService.toggleLike(postId, email));
     }
 }

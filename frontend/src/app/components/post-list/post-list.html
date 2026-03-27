@@ -27,9 +27,15 @@
       [postId]="post.id!">
     </app-post-comments>
 
-    <div class="post-footer">
-      <span>❤️ {{ post.likesCount || 0 }}</span>
-      <span>💬 {{ post.commentsCount || 0 }}</span>
+    <div class="post-actions">
+      <button class="action-btn" (click)="likePost(post)">
+        <span class="icon" [style.color]="isLiked(post) ? 'red' : 'inherit'">❤️</span>
+        {{ post.likesCount || 0 }}
+      </button>
+
+      <button class="action-btn" (click)="post.showComments = !post.showComments">
+        💬 {{ post.commentsCount || 0 }}
+      </button>
     </div>
 
   </div>

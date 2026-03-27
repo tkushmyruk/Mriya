@@ -9,6 +9,10 @@ export class PostService {
 
   constructor(private http: HttpClient) {}
 
+  toggleLike(postId: string): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/${postId}/like`, {});
+  }
+
   getPosts(ownerId: number, ownerType: OwnerType): Observable<Post[]> {
     return this.http.get<Post[]>(`${this.apiUrl}/${ownerType}/${ownerId}`);
   }
