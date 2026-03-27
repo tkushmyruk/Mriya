@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {ProfileService} from './service/profile-service';
 import {ProfileModel} from './model/profile-model';
 import {NavBar} from '../nav-bar/nav-bar';
-import {RouterOutlet} from '@angular/router';
+import {ActivatedRoute, RouterOutlet} from '@angular/router';
 import {PostListComponent} from '../components/post-list/post-list';
 import {AuthService} from '../components/services/auth.service';
 import {NgIf} from '@angular/common';
@@ -23,22 +23,27 @@ export class ProfileComponent implements OnInit {
   public profile?: ProfileModel;
   public isOwner: boolean = false;
   public userId: number | null = 0;
+  public friendshipStatus: string = 'NONE';
 
   constructor(
+    private route: ActivatedRoute,
     private readonly profileService: ProfileService,
     private authService: AuthService
   ) {}
 
   ngOnInit() {
-    this.userId = this.authService.getUserId();
-    console.log("OnInit: Retrieved userId", this.userId);
-    if (this.userId != null) {
-      this.profileService.load(this.userId).pipe().subscribe(profile => {
-        this.profile = profile;
-        console.log(this.profile.profilePhoto)
-        this.isOwner = (profile.userId === this.userId);
-      });
-    }
+    this.route.params.subscribe(params => {
+      const id = params['id'];
+
+      if (id === 'me') {
+        this.loadMyProfile();
+        this.friendshipStatus = 'SELF'; // Ти сам собі друг :)
+      } else {
+        const targetId = Number(id);
+        this.loadUserProfile(targetId);
+        this.checkFriendship(targetId);
+      }
+    });
   }
 
   get currentAvatar(): string {
@@ -47,10 +52,9 @@ export class ProfileComponent implements OnInit {
 
   onFileSelected(event: any) {
     const file: File = event.target.files[0];
-
     if (file) {
       if (this.userId != null) {
-        this.profileService.uploadAvatar(file, this.userId).subscribe({
+        this.profileService.uploadAvatar(file).subscribe({
           next: (response) => {
             if (this.profile) {
               this.profile.profilePhoto = response.url;
@@ -62,5 +66,36 @@ export class ProfileComponent implements OnInit {
     }
   }
 
+  private loadMyProfile() {
+    this.profileService.loadMyProfile().subscribe(p => {
+      this.profile = p;
+      this.isOwner = true;
+    });
+  }
+
+  private loadUserProfile(id: number) {
+    this.profileService.loadPublicProfile(id).subscribe(p => {
+      this.profile = p;
+      this.isOwner = (p.id === this.authService.getUserId());
+    });
+  }
+
+  private checkFriendship(id: number | null) {
+    this.profileService.getFriendshipStatus(id).subscribe({
+      next: (status) => this.friendshipStatus = status,
+      error: (err) => console.error('Помилка статусу друзів', err)
+    });
+  }
+
+  public addFriend() {
+    if (this.profile?.id) {
+      this.profileService.sendFriendRequest(this.profile.id).subscribe({
+        next: () => {
+          this.friendshipStatus = 'PENDING';
+        },
+        error: (err) => alert('Не вдалося надіслати запит')
+      });
+    }
+  }
 
 }

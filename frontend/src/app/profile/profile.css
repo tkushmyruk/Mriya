@@ -86,3 +86,25 @@ nav-bar {
   display: block;
   margin-top: 50px;
 }
+
+.btn-add-friend {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.btn-pending {
+  background-color: #6c757d;
+  color: white;
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.btn-accepted {
+  background-color: #28a745;
+  color: white;
+  border: none;
+}

@@ -1,7 +1,9 @@
-<!-- Абсолютний шлях -->
-<div>
-<a [routerLink]="['/profile']">Профіль</a>
-</div>
-<div>
-<a [routerLink]="['/friends']">Друзі</a>
-</div>
+<nav class="navbar">
+  <div class="nav-links">
+    <a [routerLink]="['/profile/me']">Профіль</a>
+    <a [routerLink]="['/search']" routerLinkActive="active-link">
+      <span class="icon">🔍</span> Пошук
+    </a>
+    <a [routerLink]="['/friends']">Друзі</a>
+  </div>
+</nav>
