@@ -2,6 +2,8 @@ package org.example.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.example.domain.sql.Profile;
+import org.example.domain.sql.User;
+import org.example.repository.sql.UserRepository;
 import org.example.service.MediaStorageService;
 import org.example.service.ProfileService;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,27 +14,52 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.security.Principal;
+import java.util.List;
+
 
 @RestController
-@RequestMapping("/profile/{userId}")
+@RequestMapping("/profile")
 @RequiredArgsConstructor
 public class ProfileController {
 
     private final ProfileService profileService;
     private final MediaStorageService mediaStorageService;
+    private final UserRepository userRepository;
 
-    @GetMapping
-    public Profile getProfile(@PathVariable int userId) {
-     return profileService.getProfileByUserId(userId);
+    @GetMapping("/me")
+    public Profile getMyProfile(Principal principal) {
+        User user = getUserByPrincipal(principal);
+        return profileService.getProfileByUserId(user.getId().intValue());
     }
 
-    @PostMapping("/upload-avatar")
+    @GetMapping("/public/{profileId}")
+    public Profile getPublicProfile(@PathVariable int profileId) {
+        return profileService.getProfileById(profileId);
+    }
+
+    @PostMapping("/me/upload-avatar")
     public Profile uploadAvatar(
-            @PathVariable int userId,
-            @RequestParam("file") MultipartFile file
+            @RequestParam("file") MultipartFile file,
+            Principal principal
     ) {
+        User user = getUserByPrincipal(principal);
+        int userId = user.getId().intValue();
+
         mediaStorageService.uploadMedia(file, userId);
         return profileService.getProfileByUserId(userId);
+    }
 
+    @GetMapping("/search")
+    public List<Profile> search(@RequestParam("query") String query) {
+        if (query == null || query.trim().isEmpty()) {
+            return List.of();
+        }
+        return profileService.search(query);
+    }
+
+    private User getUserByPrincipal(Principal principal) {
+        return userRepository.findByEmail(principal.getName())
+                .orElseThrow(() -> new RuntimeException("User not found"));
     }
 }

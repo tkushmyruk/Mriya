@@ -51,7 +51,7 @@ export class LoginComponent {
     request.subscribe({
       next: (response) => {
         console.log(this.isLoginMode ? 'Вхід успішний' : 'Реєстрація успішна', response.token);
-        this.router.navigate(['/profile']);
+        this.router.navigate(['/profile/me']);
       },
       error: (err) => {
         this.errorMessage = this.isLoginMode ? 'Помилка входу' : 'Помилка реєстрації';

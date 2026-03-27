@@ -1,3 +1,40 @@
-<p>friends works!</p>
 <nav-bar></nav-bar>
+<div class="friends-container">
+  <div class="tabs">
+    <button [class.active]="activeTab === 'all'" (click)="activeTab = 'all'">
+      Мої друзі ({{friends.length}})
+    </button>
+    <button [class.active]="activeTab === 'requests'" (click)="activeTab = 'requests'">
+      Заявки ({{requests.length}})
+    </button>
+  </div>
+
+  <div class="list-content">
+    <div *ngIf="activeTab === 'all'">
+      <div *ngFor="let friend of friends" class="user-card">
+        <div class="user-info-clickable" [routerLink]="['/profile', friend.id]">
+          <img [src]="friend.profile?.profilePhoto || 'avatar-default.png'" alt="avatar">
+          <span class="name">{{friend.profile?.firstName}} {{friend.profile?.lastName}}</span>
+        </div>
+
+        <button class="btn-msg">Повідомлення</button>
+      </div>
+      <p *ngIf="friends.length === 0">У вас поки немає друзів.</p>
+    </div>
+
+    <div *ngIf="activeTab === 'requests'">
+      <div *ngFor="let req of requests" class="user-card">
+        <div class="user-info-clickable" [routerLink]="['/profile', req.id]">
+        <img [src]="req.profile?.profilePhoto || 'avatar-default.png'" alt="avatar">
+        <span>{{req.profile?.firstName}} {{req.profile?.lastName}}</span>
+        </div>
+        <div class="actions">
+          <button (click)="acceptFriend(req.id)" class="btn-accept">Прийняти</button>
+          <button (click)="declineFriend(req.id)" class="btn-decline">Відхилити</button>
+        </div>
+      </div>
+      <p *ngIf="requests.length === 0">Нових заявок немає.</p>
+    </div>
+  </div>
+</div>
 <router-outlet></router-outlet>

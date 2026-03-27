@@ -16,6 +16,26 @@
       <h2 class="user-name">{{ profile.firstName }} {{ profile.lastName }}</h2>
     </header>
 
+    <div class="profile-actions" *ngIf="!isOwner">
+
+      <button *ngIf="friendshipStatus === 'NONE'"
+              (click)="addFriend()"
+              class="btn-add-friend">
+        Додати в друзі
+      </button>
+
+      <button *ngIf="friendshipStatus === 'PENDING'"
+              disabled
+              class="btn-pending">
+        Запит надіслано...
+      </button>
+
+      <button *ngIf="friendshipStatus === 'ACCEPTED'"
+              class="btn-accepted">
+        У друзях ✅
+      </button>
+
+    </div>
     <main class="profile-content">
       <div class="posts-section">
         <app-post-list
