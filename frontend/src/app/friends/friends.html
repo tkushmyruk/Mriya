@@ -1,4 +1,4 @@
-<nav-bar></nav-bar>
+
 <div class="friends-container">
   <div class="tabs">
     <button [class.active]="activeTab === 'all'" (click)="activeTab = 'all'">
@@ -17,7 +17,7 @@
           <span class="name">{{friend.profile?.firstName}} {{friend.profile?.lastName}}</span>
         </div>
 
-        <button class="btn-msg">Повідомлення</button>
+        <button class="btn-msg" [routerLink]="['/chat', friend.id]">Повідомлення</button>
       </div>
       <p *ngIf="friends.length === 0">У вас поки немає друзів.</p>
     </div>
@@ -37,4 +37,3 @@
     </div>
   </div>
 </div>
-<router-outlet></router-outlet>

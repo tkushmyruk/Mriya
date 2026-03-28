@@ -38,6 +38,11 @@ public class ProfileController {
         return profileService.getProfileById(profileId);
     }
 
+    @GetMapping("/public/user/{userId}")
+    public String getPublicProfileByUserId(@PathVariable int userId) {
+        return profileService.getProfileNameByUserId(userId);
+    }
+
     @PostMapping("/me/upload-avatar")
     public Profile uploadAvatar(
             @RequestParam("file") MultipartFile file,

@@ -1,0 +1,24 @@
+<div class="chat-wrapper">
+  <div class="chat-header">
+    <h3>Чат із користувачем {{ targetUserName }} </h3>
+  </div>
+
+  <div class="messages-container" #scrollContainer>
+    <div *ngFor="let msg of messages"
+         [ngClass]="{'my-message': msg.senderId === currentUserId, 'their-message': msg.senderId !== currentUserId}"
+         class="message-wrapper">
+      <div class="message-bubble">
+        <div class="content">{{ msg.content }}</div>
+        <div class="time">{{ msg.sentAt | date:'HH:mm' }}</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="input-area">
+    <input type="text"
+           [(ngModel)]="newMessage"
+           (keyup.enter)="send()"
+           placeholder="Введіть повідомлення...">
+    <button (click)="send()" [disabled]="!newMessage.trim()">Надіслати</button>
+  </div>
+</div>

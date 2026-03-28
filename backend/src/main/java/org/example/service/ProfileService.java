@@ -21,6 +21,12 @@ public class ProfileService {
         return profileRepository.findById(id).orElse(null);
     }
 
+    public String getProfileNameByUserId(Integer userId) {
+        Profile profile = profileRepository.findById(userId).get();
+        return profile.getFirstName() + " " + profile.getLastName();
+
+    }
+
     public List<Profile> search(String query) {
         return profileRepository.searchProfiles(query);
     }

@@ -43,6 +43,8 @@ public class SecurityConfig {
                 .requestMatchers("/users/auth/**").permitAll()
                 .requestMatchers("/profile/**").authenticated()
                 .requestMatchers("/api/**").authenticated()
+                .requestMatchers("/ws/**").permitAll()
+
 
                 .anyRequest().authenticated())
                 .sessionManagement(session -> session

@@ -37,7 +37,7 @@ export class ProfileComponent implements OnInit {
 
       if (id === 'me') {
         this.loadMyProfile();
-        this.friendshipStatus = 'SELF'; // Ти сам собі друг :)
+        this.friendshipStatus = 'SELF';
       } else {
         const targetId = Number(id);
         this.loadUserProfile(targetId);
