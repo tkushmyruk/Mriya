@@ -1,9 +1,38 @@
-<nav class="navbar">
-  <div class="nav-links">
-    <a [routerLink]="['/profile/me']">Профіль</a>
-    <a [routerLink]="['/search']" routerLinkActive="active-link">
-      <span class="icon">🔍</span> Пошук
-    </a>
-    <a [routerLink]="['/friends']">Друзі</a>
-  </div>
-</nav>
+<div class="app-container">
+  <aside class="sidebar">
+    <div class="logo">
+      <span class="logo-icon">⚡</span>
+      <span class="logo-text">DevNet</span>
+    </div>
+
+    <nav class="nav-links">
+      <a [routerLink]="['/profile/me']" routerLinkActive="active" class="nav-item">
+        <span class="icon">👤</span>
+        <span class="label">Профіль</span>
+      </a>
+
+      <a [routerLink]="['/search']" routerLinkActive="active" class="nav-item">
+        <span class="icon">🔍</span>
+        <span class="label">Пошук</span>
+      </a>
+
+      <a [routerLink]="['/friends']" routerLinkActive="active" class="nav-item">
+        <span class="icon">👥</span>
+        <span class="label">Друзі</span>
+      </a>
+
+      <a [routerLink]="['/chats']" routerLinkActive="active" class="nav-item">
+        <span class="icon">💬</span>
+        <span class="label">Повідомлення</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <button class="logout-btn">Вийти</button>
+    </div>
+  </aside>
+
+  <main class="main-content">
+    <router-outlet></router-outlet>
+  </main>
+</div>

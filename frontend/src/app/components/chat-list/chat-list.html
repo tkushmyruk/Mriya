@@ -1,0 +1,30 @@
+<div class="chat-list-container">
+  <h2>Ваші повідомлення</h2>
+
+  <div class="chat-items">
+    <div *ngFor="let chat of chats"
+         [routerLink]="['/chat', chat.interlocutorId]"
+         class="chat-item-card">
+
+      <div class="avatar-box">
+        <img [src]="chat.avatarUrl || 'assets/default-avatar.png'" alt="avatar">
+        <div class="status-online"></div>
+      </div>
+
+      <div class="chat-info">
+        <div class="chat-header">
+          <span class="user-name">{{ chat.interlocutorName }}</span>
+          <span class="time">{{ chat.lastMessageTime | date:'HH:mm' }}</span>
+        </div>
+        <div class="last-message-preview">
+          <p class="text">{{ chat.lastMessage }}</p>
+          <span *ngIf="chat.unreadCount > 0" class="badge">{{ chat.unreadCount }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="chats.length === 0" class="empty-state">
+    <p>У вас поки немає активних діалогів. Знайдіть друзів, щоб почати спілкування!</p>
+  </div>
+</div>
