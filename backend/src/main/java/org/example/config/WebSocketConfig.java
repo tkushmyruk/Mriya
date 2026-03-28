@@ -22,7 +22,7 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 
 @Configuration
 @EnableWebSocketMessageBroker
-@Order(Ordered.HIGHEST_PRECEDENCE) // Ставимо найвищий пріоритет тут
+@Order(Ordered.HIGHEST_PRECEDENCE)
 @RequiredArgsConstructor
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
@@ -45,7 +45,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void configureClientInboundChannel(ChannelRegistration registration) {
-        registration.interceptors(new ChannelInterceptor() { // Анонімний клас або винеси в окремий @Component
+        registration.interceptors(new ChannelInterceptor() {
             @Override
             public Message<?> preSend(Message<?> message, MessageChannel channel) {
                 StompHeaderAccessor accessor = MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
@@ -70,9 +70,8 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
                             }
                         }
                     } catch (Exception e) {
-                        // Якщо токен прострочений або щось інше — ми побачимо це тут
                         System.err.println("WS Auth Error: " + e.getMessage());
-                        return null; // Відхиляємо з'єднання
+                        return null;
                     }
                 }
                 return message;

@@ -47,7 +47,7 @@ public class PostService {
 
     public void incrementCommentsCount(String postId) {
         Query query = new Query(Criteria.where("id").is(postId));
-        Update update = new Update().inc("commentsCount", 1); // Збільшує на 1
+        Update update = new Update().inc("commentsCount", 1);
         mongoTemplate.updateFirst(query, update, Post.class);
     }
 
