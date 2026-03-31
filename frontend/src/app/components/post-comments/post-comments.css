@@ -1,11 +1,10 @@
 .comments-container {
-  padding: 30px 0 0 40px; /* Зсув вправо, щоб відокремити від тіла поста */
+  padding: 30px 0 0 40px;
   background: transparent;
   border: none;
   animation: fadeInComments 0.4s ease-out;
 }
 
-/* Форма додавання коментаря */
 .add-comment-form {
   display: flex;
   align-items: center;
@@ -49,13 +48,11 @@
   color: #448aff;
 }
 
-/* Список коментарів */
 .comment-item {
   margin-bottom: 30px;
   position: relative;
 }
 
-/* Тонка лінія-зв'язок зліва */
 .comment-item::before {
   content: '';
   position: absolute;
@@ -79,7 +76,7 @@
   font-weight: 900;
   text-transform: uppercase;
   letter-spacing: 2px;
-  color: #0a0a20; /* Твій Midnight Ink */
+  color: #0a0a20;
 }
 
 .comment-item .date {
@@ -97,7 +94,6 @@
   max-width: 90%;
 }
 
-/* Анімація появи */
 @keyframes fadeInComments {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
