@@ -1,0 +1,188 @@
+.profile-page-wrapper {
+  background: #ffffff;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.post-creator {
+  background: #ffffff;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.03);
+  width: 100%;
+  position: relative;
+  transition: all 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.creator-placeholder {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  cursor: pointer;
+}
+
+.creator-placeholder .text {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  color: #0a0a20;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  font-weight: 300;
+  opacity: 0.5;
+  transition: all 0.4s ease;
+}
+
+.creator-placeholder:hover .text {
+  opacity: 1;
+  letter-spacing: 6px;
+}
+
+.creator-expanded {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 50px 20px;
+  animation: slideInCustom 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.post-creator textarea {
+  width: 100%;
+  min-height: 120px;
+  border: none;
+  outline: none;
+  font-family: 'Inter', sans-serif;
+  font-size: 18px;
+  line-height: 1.6;
+  color: #0a0a20;
+  resize: none;
+  background: transparent;
+  padding: 0;
+}
+
+.expanded-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+.expanded-footer button {
+  background: #0a0a20;
+  color: #fff;
+  border: none;
+  padding: 14px 40px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  font-size: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.expanded-footer button:hover:not(:disabled) {
+  background: #448aff;
+  box-shadow: 0 10px 20px rgba(68, 138, 255, 0.2);
+}
+
+.posts-feed {
+  max-width: 800px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.post-card {
+  padding: 60px 20px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+  transition: all 0.5s ease;
+}
+
+.post-header {
+  margin-bottom: 8px;
+}
+
+.author-name {
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  color: #0a0a20;
+  opacity: 0.8;
+}
+
+.post-date {
+  margin-left: 15px;
+  font-size: 9px;
+  color: #ced4da;
+  text-transform: uppercase;
+}
+
+.post-content {
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  line-height: 1.8;
+  color: #1a1a2e;
+  margin-bottom: 15px;
+}
+
+.post-actions {
+  display: flex;
+  justify-content: flex-start;
+  gap: 60px;
+}
+
+.action-btn {
+  background: none;
+  border: none;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  padding: 0;
+  color: #868e96;
+  transition: all 0.3s ease;
+}
+
+.action-btn .count {
+  font-size: 12px;
+  font-weight: 800;
+  color: #0a0a20;
+  letter-spacing: 1px;
+}
+
+.action-btn:hover {
+  color: #0a0a20;
+  transform: translateY(-2px);
+}
+
+.action-btn.liked {
+  color: #ff4d4d;
+}
+
+.action-btn.liked .count {
+  color: #ff4d4d;
+}
+
+.post-card:hover {
+  background: rgba(0, 0, 0, 0.002);
+}
+
+@keyframes slideInCustom {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #0a0a20;
+  opacity: 0.2;
+  font-size: 14px;
+}
+
+.close-btn:hover { opacity: 1; }

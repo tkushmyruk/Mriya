@@ -24,6 +24,7 @@ export class PostListComponent implements OnChanges {
 
   posts: Post[] = [];
   newPostContent: string = '';
+  isExpanded = false;
 
   constructor(private postService: PostService) {}
 
@@ -49,6 +50,7 @@ export class PostListComponent implements OnChanges {
 
     this.postService.createPost(postData).subscribe(savedPost => {
       this.posts.unshift(savedPost);
+      this.isExpanded = false;
       this.newPostContent = '';
     });
   }
@@ -67,5 +69,9 @@ export class PostListComponent implements OnChanges {
         console.error('Помилка при лайку:', err);
       }
     });
+  }
+
+  toggleExpand(state: boolean) {
+    this.isExpanded = state;
   }
 }
