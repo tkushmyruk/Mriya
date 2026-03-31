@@ -1,14 +1,29 @@
-<div class="post-creator">
-  <textarea [(ngModel)]="newPostContent" placeholder="Що нового?"></textarea>
-  <button (click)="submitPost()" [disabled]="!newPostContent">Опублікувати</button>
+<div class="post-creator" [class.expanded]="isExpanded">
+  <div class="creator-placeholder" *ngIf="!isExpanded" (click)="toggleExpand(true)">
+    <span class="icon">＋</span>
+    <span class="text">Поділіться думками...</span>
+  </div>
+
+  <div class="creator-expanded" *ngIf="isExpanded">
+    <div class="expanded-header">
+      <button class="close-btn" (click)="toggleExpand(false)">✕</button>
+    </div>
+
+    <textarea [(ngModel)]="newPostContent" placeholder="Що у вас нового?" autoFocus></textarea>
+
+    <div class="expanded-footer">
+      <button (click)="submitPost()" [disabled]="!newPostContent">Опублікувати</button>
+    </div>
+  </div>
 </div>
 
 <div class="posts-feed">
   <div *ngFor="let post of posts" class="post-card">
-
     <div class="post-header">
-      <span>Автор: {{ post.authorId }}</span>
-      <small>{{ post.createdAt | date:'short' }}</small>
+      <div class="author-info">
+        <span class="author-name">{{ post.authorId || 'Користувач' }}</span>
+        <span class="post-date">{{ post.createdAt | date:'dd.MM.yyyy HH:mm' }}</span>
+      </div>
     </div>
 
     <div class="post-content">
@@ -16,27 +31,17 @@
     </div>
 
     <div class="post-actions">
+      <button class="action-btn" (click)="likePost(post)" [class.liked]="isLiked(post)">
+        <span class="icon">❤️</span>
+        <span class="count">{{ post.likesCount || 0 }}</span>
+      </button>
+
       <button class="action-btn" (click)="post.showComments = !post.showComments">
         <span class="icon">💬</span>
-        {{ post.showComments ? 'Сховати коментарі' : 'Коментувати' }}
+        <span class="count">{{ post.commentsCount || 0 }}</span>
       </button>
     </div>
 
-    <app-post-comments
-      *ngIf="post.showComments && post.id"
-      [postId]="post.id!">
-    </app-post-comments>
-
-    <div class="post-actions">
-      <button class="action-btn" (click)="likePost(post)">
-        <span class="icon" [style.color]="isLiked(post) ? 'red' : 'inherit'">❤️</span>
-        {{ post.likesCount || 0 }}
-      </button>
-
-      <button class="action-btn" (click)="post.showComments = !post.showComments">
-        💬 {{ post.commentsCount || 0 }}
-      </button>
-    </div>
-
+    <app-post-comments *ngIf="post.showComments && post.id" [postId]="post.id!"></app-post-comments>
   </div>
 </div>

@@ -1,57 +1,104 @@
 .comments-container {
-  padding: 10px 15px;
-  background-color: #f8f9fa;
-  border-top: 1px solid #eee;
+  padding: 30px 0 0 40px; /* Зсув вправо, щоб відокремити від тіла поста */
+  background: transparent;
+  border: none;
+  animation: fadeInComments 0.4s ease-out;
 }
 
-.comment-item {
-  margin-bottom: 10px;
-}
-
-.comment-bubble {
-  background-color: #e9ecef;
-  padding: 8px 12px;
-  border-radius: 18px;
-  display: inline-block;
-  max-width: 90%;
-}
-
-.author {
-  font-weight: bold;
-  font-size: 13px;
-  display: block;
-  margin-bottom: 2px;
-}
-
-.text {
-  margin: 0;
-  font-size: 14px;
-}
-
-.date {
-  font-size: 11px;
-  color: #888;
-  margin-left: 10px;
-}
-
+/* Форма додавання коментаря */
 .add-comment-form {
   display: flex;
-  gap: 10px;
-  margin-top: 15px;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 40px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.03);
+  padding-bottom: 15px;
 }
 
 .add-comment-form input {
   flex-grow: 1;
-  border: 1px solid #ddd;
-  border-radius: 20px;
-  padding: 8px 15px;
+  border: none;
+  background: transparent;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  color: #0a0a20;
   outline: none;
+}
+
+.add-comment-form input::placeholder {
+  color: #adb5bd;
+  letter-spacing: 1px;
 }
 
 .add-comment-form button {
   background: none;
   border: none;
-  color: #0866ff;
-  font-size: 20px;
+  color: #0a0a20;
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 2px;
   cursor: pointer;
+  opacity: 0.4;
+  transition: all 0.3s ease;
+}
+
+.add-comment-form button:hover:not(:disabled) {
+  opacity: 1;
+  color: #448aff;
+}
+
+/* Список коментарів */
+.comment-item {
+  margin-bottom: 30px;
+  position: relative;
+}
+
+/* Тонка лінія-зв'язок зліва */
+.comment-item::before {
+  content: '';
+  position: absolute;
+  left: -20px;
+  top: 0;
+  width: 1px;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.comment-header {
+  display: flex;
+  align-items: baseline;
+  gap: 15px;
+  margin-bottom: 6px;
+}
+
+.comment-item .author {
+  font-family: 'Inter', sans-serif;
+  font-size: 9px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #0a0a20; /* Твій Midnight Ink */
+}
+
+.comment-item .date {
+  font-size: 9px;
+  color: #ced4da;
+  font-weight: 400;
+}
+
+.comment-item .text {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #495057;
+  max-width: 90%;
+}
+
+/* Анімація появи */
+@keyframes fadeInComments {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }

@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {ProfileService} from './service/profile-service';
 import {ProfileModel} from './model/profile-model';
 import {NavBar} from '../nav-bar/nav-bar';
@@ -24,6 +24,7 @@ export class ProfileComponent implements OnInit {
   public isOwner: boolean = false;
   public userId: number | null = 0;
   public friendshipStatus: string = 'NONE';
+  @ViewChild('avatarWrapper') avatarWrapper!: ElementRef;
 
   constructor(
     private route: ActivatedRoute,
@@ -96,6 +97,20 @@ export class ProfileComponent implements OnInit {
         error: (err) => alert('Не вдалося надіслати запит')
       });
     }
+  }
+
+  onMouseMove(event: MouseEvent) {
+    if (!this.avatarWrapper) return;
+
+    const rect = this.avatarWrapper.nativeElement.getBoundingClientRect();
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
+
+    const xPercent = Math.round((x / rect.width) * 100);
+    const yPercent = Math.round((y / rect.height) * 100);
+
+    this.avatarWrapper.nativeElement.style.setProperty('--mouse-x', `${xPercent}%`);
+    this.avatarWrapper.nativeElement.style.setProperty('--mouse-y', `${yPercent}%`);
   }
 
 }
