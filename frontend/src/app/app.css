@@ -1,0 +1,20 @@
+.app-layout {
+  display: flex;
+  margin-top: 90px;
+  height: calc(100vh - 90px);
+  width: 100%;
+}
+
+nav-bar {
+  display: block;
+  flex: 0 0 280px;
+  height: 100%;
+  z-index: 10;
+}
+
+.main-content {
+  flex: 1;
+  height: 100%;
+  overflow-y: auto;
+  background: #f4f7f6;
+}
