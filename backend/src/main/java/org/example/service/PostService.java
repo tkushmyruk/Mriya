@@ -35,7 +35,6 @@ public class PostService {
         post.setCreatedDate(LocalDateTime.now());
         Post savedPost = postRepository.save(post);
 
-        // TODO: Відправити подію в Kafka для Qdrant (генерація ембедінга)
         // sendToVectorIndexing(savedPost);
 
         return savedPost;
