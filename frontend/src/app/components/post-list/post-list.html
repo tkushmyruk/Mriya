@@ -1,4 +1,4 @@
-<div class="post-creator" [class.expanded]="isExpanded">
+<div *ngIf="!isSmartFeed" class="post-creator" [class.expanded]="isExpanded">
   <div class="creator-placeholder" *ngIf="!isExpanded" (click)="toggleExpand(true)">
     <span class="icon">＋</span>
     <span class="text">Поділіться думками...</span>

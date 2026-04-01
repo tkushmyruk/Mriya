@@ -21,6 +21,8 @@ export class PostListComponent implements OnChanges {
   @Input() ownerId!: number;
   @Input() ownerType!: OwnerType;
   @Input() canPost: boolean = false;
+  @Input() customPosts: Post[] | null = null;
+  @Input() isSmartFeed: boolean = false;
 
   posts: Post[] = [];
   newPostContent: string = '';
@@ -29,6 +31,10 @@ export class PostListComponent implements OnChanges {
   constructor(private postService: PostService) {}
 
   ngOnChanges(changes: SimpleChanges): void {
+    if (this.customPosts) {
+      this.posts = this.customPosts;
+      return;
+    }
     if (changes['ownerId'] && changes['ownerId'].currentValue) {
       this.loadPosts();
     }

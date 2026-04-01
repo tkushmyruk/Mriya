@@ -1,0 +1,47 @@
+cloudinary:
+  cloud-name: dtajgg3xo
+  api-key: '414963236997351'
+  api-secret: x-IQGCUBMex-RsFHt7ryQ7FtTvU
+
+spring:
+  profiles:
+    include: secrets
+  datasource:
+    url: jdbc:postgresql://localhost:2310/mriya_db
+    username: postgres
+    password:
+    driver-class-name: org.postgresql.Driver
+
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/mriya_db
+
+  jackson:
+    mapper:
+      accept-case-insensitive-enums: true
+
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+  ai:
+    vectorstore:
+      qdrant:
+        host: f778ad8b-3d7b-41cd-b3fe-a6501a590904.europe-west3-0.gcp.cloud.qdrant.io
+        port: 6334
+        api-key: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2Nlc3MiOiJtIn0.zj9hRuPyqm3c2LBadoCi4y-BP0D7Qa03Qnv2qsXpt_I
+        use-tls: true
+        collection-name: MriyaVector
+    openai:
+      api-key: ${GROQ_API_KEY}
+      base-url: https://api.groq.com/openai
+      chat:
+        options:
+          model: llama-3.1-8b-instant
+          temperature: 0.3
+
+jwt:
+  secret:
+    token: 0i29Lq3EBJQ3GtOzSQ2dGEV25qG4wqzJWVB+7yGT5+Y=
