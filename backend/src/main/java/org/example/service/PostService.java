@@ -7,13 +7,21 @@ import org.example.domain.nosql.PostStatus;
 import org.example.dto.PostCreateRequest;
 import org.example.repository.nosql.PostRepository;
 import org.example.repository.sql.UserRepository;
+import org.springframework.ai.vectorstore.VectorStore;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
+import org.springframework.ai.document.Document;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -22,7 +30,8 @@ public class PostService {
     private final PostRepository postRepository;
     private final MongoTemplate mongoTemplate;
     private final UserRepository userRepository;
-    // private final KafkaTemplate<String, PostEvent> kafkaTemplate; // Додамо пізніше
+    private final VectorStore vectorStore;
+    // private final KafkaTemplate<String, PostEvent> kafkaTemplate;
 
     public Post createPost(PostCreateRequest request) {
         Post post = new Post();
@@ -36,6 +45,13 @@ public class PostService {
         Post savedPost = postRepository.save(post);
 
         // sendToVectorIndexing(savedPost);
+
+        Document document = new Document(
+                savedPost.getContent(),
+                Map.of("postId", savedPost.getId())
+        );
+
+        vectorStore.add(List.of(document));
 
         return savedPost;
     }
@@ -69,5 +85,14 @@ public class PostService {
 
         mongoTemplate.updateFirst(query, update, Post.class);
         return mongoTemplate.findOne(query, Post.class);
+    }
+
+    public List<String> findLastLikedContentListed(String userEmail) {
+        Pageable topFive = PageRequest.of(0, 5, Sort.by(Sort.Direction.DESC, "createdDate"));
+
+        Integer userId = userRepository.findByEmail(userEmail).get().getId();
+        List<Post> recentLikes = postRepository.findRecentLikes(userId, topFive);
+
+        return recentLikes.stream().map(post -> post.getContent()).toList();
     }
 }

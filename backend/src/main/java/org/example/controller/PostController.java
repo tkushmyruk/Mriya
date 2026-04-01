@@ -8,7 +8,9 @@ import org.example.dto.CreateCommentRequest;
 import org.example.dto.PostCreateRequest;
 import org.example.service.CommentService;
 import org.example.service.PostService;
+import org.example.service.RecommendationService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,6 +29,13 @@ public class PostController {
 
     private final PostService postService;
     private final CommentService commentService;
+    private final RecommendationService recommendationService;
+
+    @GetMapping("/feed")
+    public ResponseEntity<List<Post>> getSmartFeed(Principal principal) {
+        String userEmail = principal.getName();
+        return ResponseEntity.ok(recommendationService.getSmartFeed(userEmail));
+    }
 
     @PostMapping
     public Post create(@RequestBody PostCreateRequest request) {
