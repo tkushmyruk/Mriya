@@ -1,7 +1,7 @@
 <app-header></app-header>
 
 <div class="app-layout">
-  <nav-bar></nav-bar>
+  <nav-bar *ngIf="showNavbar"></nav-bar>
   <main class="main-content">
     <router-outlet></router-outlet>
   </main>

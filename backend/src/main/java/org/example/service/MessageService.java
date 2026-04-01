@@ -31,9 +31,6 @@ public class MessageService {
     private final UserRepository userRepository;
     private final MongoTemplate mongoTemplate;
 
-    /**
-     * Збереження повідомлення
-     */
     public MessageDTO saveMessage(MessageDTO dto) {
         if (!userRepository.existsById(dto.getSenderId()) ||
                 !userRepository.existsById(dto.getRecipientId())) {
