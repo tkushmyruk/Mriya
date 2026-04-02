@@ -48,7 +48,6 @@ export class PostListComponent implements OnChanges {
 
   submitPost(): void {
     const postData = {
-      authorId: parseInt(localStorage.getItem('userId') || '0', 10),
       ownerId: this.ownerId,
       ownerType: this.ownerType,
       content: this.newPostContent

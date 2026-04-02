@@ -13,15 +13,15 @@ public class ProfileService {
 
     private final ProfileRepository profileRepository;
 
-    public Profile getProfileByUserId(Integer userId) {
+    public Profile getProfileByUserId(Long userId) {
         return profileRepository.findById(userId).get();
     }
 
-    public Profile getProfileById(Integer id) {
+    public Profile getProfileById(Long id) {
         return profileRepository.findById(id).orElse(null);
     }
 
-    public String getProfileNameByUserId(Integer userId) {
+    public String getProfileNameByUserId(Long userId) {
         Profile profile = profileRepository.findById(userId).get();
         return profile.getFirstName() + " " + profile.getLastName();
 

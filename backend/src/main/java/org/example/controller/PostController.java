@@ -6,6 +6,7 @@ import org.example.domain.nosql.OwnerType;
 import org.example.domain.nosql.Post;
 import org.example.dto.CreateCommentRequest;
 import org.example.dto.PostCreateRequest;
+import org.example.repository.sql.UserRepository;
 import org.example.service.CommentService;
 import org.example.service.PostService;
 import org.example.service.RecommendationService;
@@ -30,6 +31,7 @@ public class PostController {
     private final PostService postService;
     private final CommentService commentService;
     private final RecommendationService recommendationService;
+    private final UserRepository userRepository;
 
     @GetMapping("/feed")
     public ResponseEntity<List<Post>> getSmartFeed(Principal principal) {
@@ -38,8 +40,8 @@ public class PostController {
     }
 
     @PostMapping
-    public Post create(@RequestBody PostCreateRequest request) {
-        return postService.createPost(request);
+    public Post create(@RequestBody PostCreateRequest request, Principal principal) {
+        return postService.createPost(request, principal.getName());
     }
 
     @GetMapping("/{ownerType}/{ownerId}")

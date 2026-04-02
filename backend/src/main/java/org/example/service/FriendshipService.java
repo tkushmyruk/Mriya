@@ -20,7 +20,7 @@ public class FriendshipService {
     private final UserRepository userRepository;
 
     @Transactional
-    public void sendFriendRequest(int requesterId, int addresseeId) {
+    public void sendFriendRequest(long requesterId, long addresseeId) {
         if (requesterId == addresseeId) {
             throw new IllegalArgumentException("Ви не можете додати самого себе у друзі");
         }
@@ -51,7 +51,7 @@ public class FriendshipService {
     }
 
     @Transactional
-    public void acceptFriendRequest(Integer userId, Integer requesterId) {
+    public void acceptFriendRequest(Long userId, Long requesterId) {
         Friendship friendship = friendshipRepository.findByRequesterIdAndAddresseeId(requesterId, userId)
                 .orElseThrow(() -> new RuntimeException("Запит не знайдено"));
 
@@ -63,7 +63,7 @@ public class FriendshipService {
     }
 
     @Transactional
-    public void declineFriendRequest(Integer userId, Integer otherUserId) {
+    public void declineFriendRequest(Long userId, Long otherUserId) {
         friendshipRepository.findRelation(userId, otherUserId)
                 .ifPresent(friendshipRepository::delete);
     }

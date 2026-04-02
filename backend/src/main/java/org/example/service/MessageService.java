@@ -49,7 +49,7 @@ public class MessageService {
         return mapToDTO(saved);
     }
 
-    public List<MessageDTO> getChatHistory(Integer u1, Integer u2) {
+    public List<MessageDTO> getChatHistory(Long u1, Long u2) {
         return messageRepository.findChatHistory(u1, u2)
                 .stream()
                 .map(this::mapToDTO)
@@ -66,7 +66,7 @@ public class MessageService {
         return dto;
     }
 
-    public List<ChatSummaryDTO> getChatSummaries(Integer currentUserId) {
+    public List<ChatSummaryDTO> getChatSummaries(Long currentUserId) {
         Aggregation aggregation = Aggregation.newAggregation(
                 Aggregation.match(new Criteria().orOperator(
                         Criteria.where("senderId").is(currentUserId),
@@ -88,13 +88,13 @@ public class MessageService {
         AggregationResults<Document> results = mongoTemplate.aggregate(aggregation, "messages", Document.class);
         List<Document> mappedResults = results.getMappedResults();
 
-        List<Integer> interlocutorIds = mappedResults.stream()
+        List<Long> interlocutorIds = mappedResults.stream()
                 .map(doc -> doc.get("_id"))
                 .filter(java.util.Objects::nonNull)
-                .map(id -> Integer.parseInt(id.toString()))
+                .map(id -> Long.parseLong(id.toString()))
                 .collect(Collectors.toList());
 
-        Map<Integer, User> userMap = userRepository.findAllById(interlocutorIds).stream()
+        Map<Long, User> userMap = userRepository.findAllById(interlocutorIds).stream()
                 .collect(Collectors.toMap(User::getId, u -> u));
 
         return mappedResults.stream()
@@ -102,7 +102,7 @@ public class MessageService {
                     Object idObj = doc.get("_id");
                     if (idObj == null) return null;
 
-                    Integer interlocutorId = Integer.parseInt(idObj.toString());
+                    Long interlocutorId = Long.parseLong(idObj.toString());
                     User user = userMap.get(interlocutorId);
 
                     String fullName = "Unknown User";

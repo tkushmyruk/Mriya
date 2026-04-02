@@ -21,7 +21,7 @@
   <div *ngFor="let post of posts" class="post-card">
     <div class="post-header">
       <div class="author-info">
-        <span class="author-name">{{ post.authorId || 'Користувач' }}</span>
+        <span class="author-name">{{ post.authorFirstName + ' ' + post.authorLastName || 'Користувач' }}</span>
         <span class="post-date">{{ post.createdAt | date:'dd.MM.yyyy HH:mm' }}</span>
       </div>
     </div>

@@ -11,12 +11,12 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface ProfileRepository extends JpaRepository<Profile, Integer> {
-    Optional<Profile> findById(Integer userId);
+public interface ProfileRepository extends JpaRepository<Profile, Long> {
+    Optional<Profile> findById(Long userId);
 
     @Modifying
     @Query("UPDATE Profile p SET p.profilePhoto = :profilePhoto WHERE p.id = :id")
-    int updateProfileUrlById(Integer id, String profilePhoto);
+    int updateProfileUrlById(Long id, String profilePhoto);
 
     @Query("SELECT p FROM Profile p WHERE " +
             "LOWER(p.firstName) LIKE LOWER(CONCAT('%', :query, '%')) OR " +
