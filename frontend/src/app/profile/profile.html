@@ -8,6 +8,11 @@
         <span class="status-text">SYSTEM ACTIVE</span>
       </div>
 
+      <button *ngIf="isOwner" class="edit-profile-action" routerLink="/profile/edit">
+        <span class="icon">⚙️</span>
+        <span class="label">Налаштувати</span>
+      </button>
+
       <div class="avatar-wrapper" #avatarWrapper (mousemove)="onMouseMove($event)">
         <img [src]="currentAvatar" class="profile-avatar" alt="Аватар">
 

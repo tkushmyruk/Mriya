@@ -3,15 +3,13 @@ package org.example.controller;
 import lombok.RequiredArgsConstructor;
 import org.example.domain.sql.Profile;
 import org.example.domain.sql.User;
+import org.example.dto.UpdateProfileRequest;
 import org.example.repository.sql.UserRepository;
 import org.example.service.MediaStorageService;
 import org.example.service.ProfileService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.example.service.UserService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.security.Principal;
@@ -26,6 +24,7 @@ public class ProfileController {
     private final ProfileService profileService;
     private final MediaStorageService mediaStorageService;
     private final UserRepository userRepository;
+    private final UserService userService;
 
     @GetMapping("/me")
     public Profile getMyProfile(Principal principal) {
@@ -53,6 +52,12 @@ public class ProfileController {
 
         mediaStorageService.uploadMedia(file, userId);
         return profileService.getProfileByUserId(userId);
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<User> updateProfile(@RequestBody UpdateProfileRequest request, Principal principal) {
+        String email = principal.getName();
+        return ResponseEntity.ok(userService.updateProfile(email, request));
     }
 
     @GetMapping("/search")

@@ -8,22 +8,21 @@
   padding: 0;
   display: flex;
   flex-direction: column;
+  position: relative;
 }
 
 .profile-header {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 40px 0;
+  padding: 60px 0 40px;
   width: 100%;
-
   background: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(25px);
   border-bottom: 1px solid rgba(0, 0, 0, 0.03);
-  box-shadow: 0 10px 50px rgba(0, 0, 0, 0.02);
   position: relative;
-
-  box-shadow: inset 0 0 100px rgba(255, 255, 255, 0.5);
+  box-shadow: 0 10px 50px rgba(0, 0, 0, 0.02),
+  inset 0 0 100px rgba(255, 255, 255, 0.5);
 }
 
 .profile-header::before {
@@ -38,10 +37,9 @@
   animation: scanline-pulse 4s infinite ease-in-out;
 }
 
-.status-indicator {
+.status-indicator, .edit-profile-action {
   position: absolute;
   top: 15px;
-  right: 25px;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -49,15 +47,45 @@
   background: rgba(0, 0, 0, 0.02);
   border-radius: 20px;
   border: 1px solid rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
+
+.status-indicator {
+  right: 25px;
+}
+
+.edit-profile-action {
+  left: 25px;
+  cursor: pointer;
+  text-decoration: none;
+  background: rgba(0, 0, 0, 0.02);
+}
+
+.edit-profile-action:hover {
+  background: rgba(0, 0, 0, 0.05);
+  border-color: rgba(68, 138, 255, 0.3);
+  transform: translateY(-1px);
+}
+
+.pulse-dot, .pulse-dot-edit {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
 }
 
 .pulse-dot {
-  width: 6px;
-  height: 6px;
   background: #00FFCC;
-  border-radius: 50%;
   box-shadow: 0 0 10px #00FFCC;
   animation: dot-pulse 1.5s infinite ease-in-out;
+}
+
+.pulse-dot-edit {
+  background: #448aff;
+  box-shadow: 0 0 8px rgba(68, 138, 255, 0.5);
+}
+
+.edit-profile-action:hover .pulse-dot-edit {
+  animation: dot-pulse-blue 1.5s infinite ease-in-out;
 }
 
 .status-text {
@@ -66,6 +94,7 @@
   color: #0a0a20;
   letter-spacing: 2px;
   opacity: 0.7;
+  text-transform: uppercase;
 }
 
 .avatar-wrapper {
@@ -79,32 +108,8 @@
   background: #ffffff;
   border: 1px solid rgba(0, 0, 0, 0.05);
   transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
-}
-
-.avatar-wrapper::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  pointer-events: none;
-
-  background: radial-gradient(
-    600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
-    rgba(68, 138, 255, 0.2),
-    transparent 40%
-  );
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  z-index: 1;
-}
-
-.avatar-wrapper:hover::after {
-  opacity: 1;
+  z-index: 5;
 }
 
 .avatar-wrapper:hover {
@@ -118,7 +123,6 @@
   border-radius: 50%;
   object-fit: cover;
   border: 2px solid #f0f2f5;
-  transition: all 0.3s ease;
 }
 
 .user-name {
@@ -130,6 +134,7 @@
   letter-spacing: 12px;
   color: #0a0a20;
   opacity: 0.9;
+  text-align: center;
 }
 
 .upload-overlay {
@@ -164,6 +169,7 @@
   border-radius: 20px;
 }
 
+/* --- КОНТЕНТ (СТРІЧКА ПОСТІВ) --- */
 .profile-content {
   width: 100%;
   max-width: 800px;
@@ -180,4 +186,10 @@
   0% { transform: scale(0.9); box-shadow: 0 0 5px #00FFCC; }
   50% { transform: scale(1.1); box-shadow: 0 0 15px #00FFCC; }
   100% { transform: scale(0.9); box-shadow: 0 0 5px #00FFCC; }
+}
+
+@keyframes dot-pulse-blue {
+  0% { transform: scale(0.9); box-shadow: 0 0 5px #448aff; }
+  50% { transform: scale(1.1); box-shadow: 0 0 15px #448aff; }
+  100% { transform: scale(0.9); box-shadow: 0 0 5px #448aff; }
 }
