@@ -6,8 +6,10 @@ import { SearchComponent } from './components/search-component/search-component'
 import { ChatListComponent } from './components/chat-list/chat-list';
 import {ChatComponent} from './components/chat-component/chat-component';
 import {FeedComponent} from './components/feed/feed';
+import {EditProfileComponent} from './components/edit-profile/edit-profile';
 
 export const routes: Routes = [
+  { path: 'profile/edit', component: EditProfileComponent },
   { path: 'profile', component: ProfileComponent },
   { path: 'profile/:id', component: ProfileComponent },
   { path: '', redirectTo: '/feed', pathMatch: 'full' },

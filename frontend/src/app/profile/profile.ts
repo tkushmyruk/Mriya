@@ -2,7 +2,7 @@ import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {ProfileService} from './service/profile-service';
 import {ProfileModel} from './model/profile-model';
 import {NavBar} from '../nav-bar/nav-bar';
-import {ActivatedRoute, RouterOutlet} from '@angular/router';
+import {ActivatedRoute, RouterLink, RouterOutlet} from '@angular/router';
 import {PostListComponent} from '../components/post-list/post-list';
 import {AuthService} from '../components/services/auth.service';
 import {NgIf} from '@angular/common';
@@ -13,7 +13,8 @@ import {NgIf} from '@angular/common';
     NavBar,
     RouterOutlet,
     PostListComponent,
-    NgIf
+    NgIf,
+    RouterLink
   ],
   templateUrl: './profile.html',
   styleUrl: './profile.css',

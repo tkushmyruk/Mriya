@@ -1,13 +1,20 @@
 package org.example.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
+import org.example.domain.nosql.Post;
 import org.example.domain.sql.Profile;
 import org.example.domain.sql.Role;
 import org.example.domain.sql.User;
 import org.example.dto.AuthenticationRequest;
 import org.example.dto.AuthenticationResponse;
 import org.example.dto.RegisterRequest;
+import org.example.dto.UpdateProfileRequest;
 import org.example.repository.sql.UserRepository;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -22,6 +29,28 @@ public class UserService {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
     private final ProfileService profileService;
+
+    private final MongoTemplate mongoTemplate;
+
+    @Transactional
+    public User updateProfile(String email, UpdateProfileRequest request) {
+        User user = repository.findByEmail(email)
+                .orElseThrow(() -> new EntityNotFoundException("User not found"));
+
+        user.getProfile().setFirstName(request.getFirstName());
+        user.getProfile().setLastName(request.getLastName());
+
+        repository.save(user);
+
+        Query query = new Query(Criteria.where("authorId").is(user.getId()));
+        Update update = new Update()
+                .set("authorFirstName", request.getFirstName())
+                .set("authorLastName", request.getLastName());
+
+        mongoTemplate.updateMulti(query, update, Post.class);
+
+        return user;
+    }
 
     @Transactional
     public String register(RegisterRequest request) {

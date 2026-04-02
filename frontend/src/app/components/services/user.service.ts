@@ -10,6 +10,14 @@ export class UserService {
 
   constructor(private http: HttpClient) {}
 
+  getCurrentUser(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/profile/me`);
+  }
+
+  updateProfile(data: any): Observable<any> {
+    return this.http.put(`${this.apiUrl}/profile/update`, data);
+  }
+
   getUserNameByUserId(userId: number): Observable<string> {
     return this.http.get(`${this.apiUrl}/profile/public/user/${userId}`, { responseType: 'text' }).pipe(
       catchError(error => {

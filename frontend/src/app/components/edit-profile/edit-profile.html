@@ -1,0 +1,30 @@
+<div class="edit-profile-container">
+  <h2>Редагувати профіль</h2>
+
+  <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="firstName">Ім'я</label>
+      <input id="firstName" formControlName="firstName" type="text" placeholder="Ваше ім'я">
+      <div *ngIf="profileForm.get('firstName')?.invalid && profileForm.get('firstName')?.touched" class="error">
+        Ім'я надто коротке
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="lastName">Прізвище</label>
+      <input id="lastName" formControlName="lastName" type="text" placeholder="Ваше прізвище">
+      <div *ngIf="profileForm.get('lastName')?.invalid && profileForm.get('lastName')?.touched" class="error">
+        Прізвище надто коротке
+      </div>
+    </div>
+
+    <div class="actions">
+      <button type="submit" [disabled]="profileForm.invalid || isLoading">
+        {{ isLoading ? 'Збереження...' : 'Зберегти зміни' }}
+      </button>
+      <button type="button" class="cancel-btn" (click)="router.navigate(['/profile/me'])">Скасувати</button>
+    </div>
+
+    <p *ngIf="message" class="status-message">{{ message }}</p>
+  </form>
+</div>
