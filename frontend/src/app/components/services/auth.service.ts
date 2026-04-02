@@ -23,6 +23,13 @@ export class AuthService {
     );
   }
 
+  logout(): void {
+    if (isPlatformBrowser(this.platformId)) {
+      localStorage.removeItem('access_token');
+      localStorage.removeItem('user_id');
+    }
+  }
+
   getUserId(): number | null {
     if (isPlatformBrowser(this.platformId)) {
       const id = localStorage.getItem('user_id');
