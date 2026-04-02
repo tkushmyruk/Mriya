@@ -42,6 +42,10 @@
       </button>
     </div>
 
-    <app-post-comments *ngIf="post.showComments && post.id" [postId]="post.id!"></app-post-comments>
+    <app-post-comments
+      *ngIf="post.showComments && post.id"
+      [postId]="post.id!"
+      (commentAdded)="post.commentsCount = (post.commentsCount || 0) + 1">
+    </app-post-comments>
   </div>
 </div>
