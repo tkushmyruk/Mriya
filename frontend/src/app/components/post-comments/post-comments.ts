@@ -1,8 +1,9 @@
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit, Output} from '@angular/core';
 import {CommentModel} from '../models/comment.model';
 import {CommentService} from '../services/comment.service';
+import { EventEmitter } from '@angular/core'
 
 @Component({
   selector: 'app-post-comments',
@@ -13,6 +14,7 @@ import {CommentService} from '../services/comment.service';
 })
 export class PostCommentsComponent implements OnInit {
   @Input() postId!: string;
+  @Output() commentAdded = new EventEmitter<void>();
   comments: CommentModel[] = [];
   newCommentText: string = '';
 
@@ -34,6 +36,7 @@ export class PostCommentsComponent implements OnInit {
     this.commentService.addComment(this.postId, this.newCommentText).subscribe(newComment => {
       this.comments.push(newComment);
       this.newCommentText = '';
+      this.commentAdded.emit();
     });
   }
 }
