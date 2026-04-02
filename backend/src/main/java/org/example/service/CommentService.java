@@ -20,7 +20,7 @@ public class CommentService {
     private final UserRepository userRepository;
 
     public Comment addComment(String userEmail, CreateCommentRequest request) {
-        Integer currentUserId = userRepository.findByEmail(userEmail).get().getId();
+        Long currentUserId = userRepository.findByEmail(userEmail).get().getId();
         Profile profile = profileService.getProfileByUserId(currentUserId);
 
         Comment comment = Comment.builder()

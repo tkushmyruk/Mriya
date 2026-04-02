@@ -30,16 +30,16 @@ public class ProfileController {
     @GetMapping("/me")
     public Profile getMyProfile(Principal principal) {
         User user = getUserByPrincipal(principal);
-        return profileService.getProfileByUserId(user.getId().intValue());
+        return profileService.getProfileByUserId(user.getId());
     }
 
     @GetMapping("/public/{profileId}")
-    public Profile getPublicProfile(@PathVariable int profileId) {
+    public Profile getPublicProfile(@PathVariable long profileId) {
         return profileService.getProfileById(profileId);
     }
 
     @GetMapping("/public/user/{userId}")
-    public String getPublicProfileByUserId(@PathVariable int userId) {
+    public String getPublicProfileByUserId(@PathVariable long userId) {
         return profileService.getProfileNameByUserId(userId);
     }
 
@@ -49,7 +49,7 @@ public class ProfileController {
             Principal principal
     ) {
         User user = getUserByPrincipal(principal);
-        int userId = user.getId().intValue();
+        long userId = user.getId();
 
         mediaStorageService.uploadMedia(file, userId);
         return profileService.getProfileByUserId(userId);

@@ -20,7 +20,7 @@ public class Comment {
     @Indexed
     private String postId;
 
-    private Integer authorId;
+    private Long authorId;
 
     private String authorName;
 

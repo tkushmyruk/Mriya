@@ -20,9 +20,9 @@ public class Profile {
     @Id()
     @Column(name = "ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Integer id;
+    public Long id;
     @Column(name = "USER_ID")
-    public Integer userId;
+    public Long userId;
     @Column(name = "FIRST_NAME")
     public String firstName;
     @Column(name = "LAST_NAME")

@@ -24,6 +24,9 @@ public class Post {
     @Indexed
     private Long authorId;
 
+    private String authorFirstName;
+    private String authorLastName;
+
     private String content;
 
     @Indexed

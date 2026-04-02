@@ -15,7 +15,7 @@ public class ChatSummaryDTO {
 
     private String chatId;
 
-    private Integer interlocutorId;
+    private Long interlocutorId;
 
     private String interlocutorName;
 

@@ -4,8 +4,11 @@ import lombok.AllArgsConstructor;
 import org.example.domain.nosql.OwnerType;
 import org.example.domain.nosql.Post;
 import org.example.domain.nosql.PostStatus;
+import org.example.domain.sql.Profile;
+import org.example.domain.sql.User;
 import org.example.dto.PostCreateRequest;
 import org.example.repository.nosql.PostRepository;
+import org.example.repository.sql.ProfileRepository;
 import org.example.repository.sql.UserRepository;
 import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.data.domain.PageRequest;
@@ -33,12 +36,15 @@ public class PostService {
     private final VectorStore vectorStore;
     // private final KafkaTemplate<String, PostEvent> kafkaTemplate;
 
-    public Post createPost(PostCreateRequest request) {
+    public Post createPost(PostCreateRequest request, String userEmail) {
+        User user = userRepository.findByEmail(userEmail).get();
         Post post = new Post();
-        post.setAuthorId(request.getAuthorId());
+        post.setAuthorId(user.getId());
         post.setOwnerId(request.getOwnerId());
         post.setOwnerType(request.getOwnerType());
         post.setContent(request.getContent());
+        post.setAuthorFirstName(user.getProfile().getFirstName());
+        post.setAuthorLastName(user.getProfile().getLastName());
 //        post.setTags(request.getTags());
         post.setPostStatus(PostStatus.PUBLISHED);
         post.setCreatedDate(LocalDateTime.now());
@@ -67,7 +73,7 @@ public class PostService {
     }
 
     public Post toggleLike(String postId, String email) {
-        int userId = userRepository.findByEmail(email).get().getId();
+        Long userId = userRepository.findByEmail(email).get().getId();
         Query query = new Query(Criteria.where("id").is(postId));
         Post post = mongoTemplate.findOne(query, Post.class);
 
@@ -90,7 +96,7 @@ public class PostService {
     public List<String> findLastLikedContentListed(String userEmail) {
         Pageable topFive = PageRequest.of(0, 5, Sort.by(Sort.Direction.DESC, "createdDate"));
 
-        Integer userId = userRepository.findByEmail(userEmail).get().getId();
+        Long userId = userRepository.findByEmail(userEmail).get().getId();
         List<Post> recentLikes = postRepository.findRecentLikes(userId, topFive);
 
         return recentLikes.stream().map(post -> post.getContent()).toList();

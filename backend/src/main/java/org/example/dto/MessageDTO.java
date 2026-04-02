@@ -14,8 +14,8 @@ import java.time.LocalDateTime;
 public class MessageDTO {
 
     private String id;
-    private Integer senderId;
-    private Integer recipientId;
+    private Long senderId;
+    private Long recipientId;
     private String content;
     private LocalDateTime sentAt;
     private String status;

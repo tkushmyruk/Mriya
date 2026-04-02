@@ -18,8 +18,8 @@ public class Message {
     @Id
     private String id;
 
-    private Integer senderId;
-    private Integer recipientId;
+    private Long senderId;
+    private Long recipientId;
     private String content;
     private LocalDateTime sentAt;
 

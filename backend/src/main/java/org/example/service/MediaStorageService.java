@@ -18,7 +18,7 @@ public class MediaStorageService {
     private final ProfileRepository profileRepository;
 
     @Transactional
-    public String uploadMedia(MultipartFile file, int userId) {
+    public String uploadMedia(MultipartFile file, long userId) {
         try {
             Map uploadResult = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.emptyMap());
             String mediaUrl = (String) uploadResult.get("secure_url");

@@ -19,5 +19,5 @@ public interface PostRepository extends MongoRepository<Post, String> {
     List<Post> findByLikedByContainingOrderByCreatedDateDesc(String userEmail, Pageable pageable);
 
     @Query("{ 'likedBy': ?0 }")
-    List<Post> findRecentLikes(Integer userId, Pageable pageable);
+    List<Post> findRecentLikes(Long userId, Pageable pageable);
 }

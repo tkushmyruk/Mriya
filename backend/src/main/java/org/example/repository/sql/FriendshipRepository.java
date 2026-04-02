@@ -18,15 +18,15 @@ public interface FriendshipRepository extends JpaRepository<Friendship, Long> {
     @Query("SELECT f FROM Friendship f " +
             "WHERE (CAST(f.requester.id AS integer) = :u1 AND CAST(f.addressee.id AS integer) = :u2) " +
             "OR (CAST(f.requester.id AS integer) = :u2 AND CAST(f.addressee.id AS integer) = :u1)")
-    Optional<Friendship> findRelation(@Param("u1") Integer u1, @Param("u2") Integer u2);
+    Optional<Friendship> findRelation(@Param("u1") Long u1, @Param("u2") Long u2);
 
     @Query("SELECT a FROM Friendship f JOIN f.addressee a JOIN FETCH a.profile WHERE f.requester.id = :id AND f.status = 'ACCEPTED'")
-    List<User> findFriendsAsRequester(@Param("id") Integer id);
+    List<User> findFriendsAsRequester(@Param("id") Long id);
 
     @Query("SELECT r FROM Friendship f JOIN f.requester r JOIN FETCH r.profile WHERE f.addressee.id = :id AND f.status = 'ACCEPTED'")
-    List<User> findFriendsAsAddressee(@Param("id") Integer id);
+    List<User> findFriendsAsAddressee(@Param("id") Long id);
 
-    default List<User> findAllAcceptedFriends(Integer userId) {
+    default List<User> findAllAcceptedFriends(Long userId) {
         List<User> friends = new java.util.ArrayList<>();
         friends.addAll(findFriendsAsRequester(userId));
         friends.addAll(findFriendsAsAddressee(userId));
@@ -34,7 +34,7 @@ public interface FriendshipRepository extends JpaRepository<Friendship, Long> {
     }
 
     @Query("SELECT f.requester FROM Friendship f WHERE f.addressee.id = :id AND f.status = 'PENDING'")
-    List<User> findIncomingRequests(@Param("id") Integer userId);
+    List<User> findIncomingRequests(@Param("id") Long userId);
 
-    Optional<Friendship> findByRequesterIdAndAddresseeId(Integer requesterId, Integer addresseeId);
+    Optional<Friendship> findByRequesterIdAndAddresseeId(Long requesterId, Long addresseeId);
 }

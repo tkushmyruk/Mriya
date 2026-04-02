@@ -7,7 +7,6 @@ import java.util.List;
 
 @Data
 public class PostCreateRequest {
-    private Long authorId;
     private Long ownerId;
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     private OwnerType ownerType;

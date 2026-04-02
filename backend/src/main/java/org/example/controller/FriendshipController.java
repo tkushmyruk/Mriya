@@ -23,7 +23,7 @@ public class FriendshipController {
     @PostMapping("/request/{id}")
     public ResponseEntity<Void> sendRequest( Principal principal, @PathVariable Integer id) {
 
-        Integer userId = getUserByPrincipal(principal).getId();
+        Long userId = getUserByPrincipal(principal).getId();
         friendshipService.sendFriendRequest(userId, id);
         return ResponseEntity.ok().build();
     }
@@ -31,8 +31,8 @@ public class FriendshipController {
     @GetMapping("/status/{id}")
     public ResponseEntity<String> getStatus(
             Principal principal,
-            @PathVariable Integer id) {
-        Integer userId = getUserByPrincipal(principal).getId();
+            @PathVariable Long id) {
+        Long userId = getUserByPrincipal(principal).getId();
 
         return friendshipRepository.findRelation(userId, id)
                 .map(f -> f.getStatus().toString())
@@ -46,26 +46,26 @@ public class FriendshipController {
 
     @GetMapping("/all")
     public List<User> getFriends(Principal principal) {
-        Integer userId = getUserByPrincipal(principal).getId();
+        Long userId = getUserByPrincipal(principal).getId();
         return friendshipRepository.findAllAcceptedFriends(userId);
     }
 
     @GetMapping("/requests")
     public List<User> getRequests(Principal principal) {
-        Integer userId = getUserByPrincipal(principal).getId();
+        Long userId = getUserByPrincipal(principal).getId();
         return friendshipRepository.findIncomingRequests(userId);
     }
 
     @PostMapping("/accept/{requesterId}")
-    public ResponseEntity<Void> acceptRequest(Principal principal, @PathVariable Integer requesterId) {
-        Integer myId = getUserByPrincipal(principal).getId();
+    public ResponseEntity<Void> acceptRequest(Principal principal, @PathVariable Long requesterId) {
+        Long myId = getUserByPrincipal(principal).getId();
         friendshipService.acceptFriendRequest(myId, requesterId);
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/decline/{otherId}")
-    public ResponseEntity<Void> declineRequest(Principal principal, @PathVariable Integer otherId) {
-        Integer myId = getUserByPrincipal(principal).getId();
+    public ResponseEntity<Void> declineRequest(Principal principal, @PathVariable Long otherId) {
+        Long myId = getUserByPrincipal(principal).getId();
         friendshipService.declineFriendRequest(myId, otherId);
         return ResponseEntity.ok().build();
     }

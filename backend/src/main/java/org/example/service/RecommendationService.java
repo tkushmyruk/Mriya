@@ -44,7 +44,7 @@ public class RecommendationService {
             });
         }
 
-        Integer currentUserId = userRepository.findByEmail(userEmail).get().getId();
+        Long currentUserId = userRepository.findByEmail(userEmail).get().getId();
 
         List<Post> candidatePosts = candidateIds.stream()
                 .map(id -> postRepository.findById(id).orElse(null))

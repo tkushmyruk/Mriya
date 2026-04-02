@@ -54,13 +54,13 @@ public class ChatController {
     }
     @GetMapping("/chats")
     public ResponseEntity<List<ChatSummaryDTO>> getChatSummaries( Principal principal) {
-        Integer userId = userRepository.findByEmail(principal.getName()).get().getId();
+        Long userId = userRepository.findByEmail(principal.getName()).get().getId();
         return ResponseEntity.ok(messageService.getChatSummaries(userId));
     }
 
     @GetMapping("/history/{interlocutorId}")
-    public ResponseEntity<List<MessageDTO>> getChatHistory(Principal principal, @PathVariable Integer interlocutorId) {
-        Integer currentUserId = userRepository.findByEmail(principal.getName())
+    public ResponseEntity<List<MessageDTO>> getChatHistory(Principal principal, @PathVariable Long interlocutorId) {
+        Long currentUserId = userRepository.findByEmail(principal.getName())
                 .orElseThrow(() -> new RuntimeException("User not found"))
                 .getId();
 
