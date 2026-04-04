@@ -63,7 +63,7 @@ public class PostService {
     }
 
     public List<Post> getPostsByOwner(Long ownerId, OwnerType ownerType) {
-        return postRepository.findByOwnerIdAndOwnerType(ownerId, ownerType);
+        return postRepository.findByOwnerIdAndOwnerTypeOrderByCreatedDateDesc(ownerId, ownerType);
     }
 
     public void incrementCommentsCount(String postId) {
