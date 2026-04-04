@@ -169,12 +169,26 @@
   border-radius: 20px;
 }
 
-/* --- КОНТЕНТ (СТРІЧКА ПОСТІВ) --- */
 .profile-content {
   width: 100%;
   max-width: 800px;
   margin: 40px auto;
   padding: 0 20px;
+}
+
+.status-indicator.is-offline {
+  background: rgba(0, 0, 0, 0.05);
+  border-color: rgba(0, 0, 0, 0.1);
+}
+
+.pulse-dot.dot-offline {
+  background: #7a7a8c;
+  box-shadow: none;
+  animation: none;
+}
+
+.is-offline .status-text {
+  color: #7a7a8c;
 }
 
 @keyframes scanline-pulse {

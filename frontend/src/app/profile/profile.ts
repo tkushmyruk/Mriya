@@ -1,17 +1,16 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {ProfileService} from './service/profile-service';
 import {ProfileModel} from './model/profile-model';
-import {NavBar} from '../nav-bar/nav-bar';
-import {ActivatedRoute, RouterLink, RouterOutlet} from '@angular/router';
+import {ActivatedRoute, RouterLink} from '@angular/router';
 import {PostListComponent} from '../components/post-list/post-list';
 import {AuthService} from '../components/services/auth.service';
 import {NgIf} from '@angular/common';
+import {PresenceService} from '../components/services/presense.service';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-profile',
   imports: [
-    NavBar,
-    RouterOutlet,
     PostListComponent,
     NgIf,
     RouterLink
@@ -19,18 +18,23 @@ import {NgIf} from '@angular/common';
   templateUrl: './profile.html',
   styleUrl: './profile.css',
 })
-export class ProfileComponent implements OnInit {
+export class ProfileComponent implements OnInit, OnDestroy {
 
   public profile?: ProfileModel;
   public isOwner: boolean = false;
   public userId: number | null = 0;
   public friendshipStatus: string = 'NONE';
+  isOnline: boolean = false;
+
+  private presenceSubscription?: Subscription;
+
   @ViewChild('avatarWrapper') avatarWrapper!: ElementRef;
 
   constructor(
     private route: ActivatedRoute,
     private readonly profileService: ProfileService,
-    private authService: AuthService
+    private authService: AuthService,
+    private presenceService: PresenceService
   ) {}
 
   ngOnInit() {
@@ -55,16 +59,14 @@ export class ProfileComponent implements OnInit {
   onFileSelected(event: any) {
     const file: File = event.target.files[0];
     if (file) {
-      if (this.userId != null) {
-        this.profileService.uploadAvatar(file).subscribe({
-          next: (response) => {
-            if (this.profile) {
-              this.profile.profilePhoto = response.url;
-            }
-          },
-          error: (err) => console.error('Error occured', err)
-        });
-      }
+      this.profileService.uploadAvatar(file).subscribe({
+        next: (response) => {
+          if (this.profile) {
+            this.profile.profilePhoto = response.url;
+          }
+        },
+        error: (err) => console.error('Error occured', err)
+      });
     }
   }
 
@@ -72,14 +74,34 @@ export class ProfileComponent implements OnInit {
     this.profileService.loadMyProfile().subscribe(p => {
       this.profile = p;
       this.isOwner = true;
+      this.loadUserPresence();
     });
   }
 
   private loadUserProfile(id: number) {
+    console.log("LOAD")
     this.profileService.loadPublicProfile(id).subscribe(p => {
       this.profile = p;
-      this.isOwner = (p.id === this.authService.getUserId());
+      console.log(p)
+      this.isOwner = (p.userId === this.authService.getUserId());
+      this.loadUserPresence();
     });
+  }
+
+  loadUserPresence() {
+    if (!this.profile || !this.profile.userId) {
+      console.warn("Profile or userId is missing");
+      return;
+    }
+
+    this.presenceSubscription?.unsubscribe();
+
+    console.log("loaduserP " + this.profile.userId)
+    this.presenceSubscription = this.presenceService
+      .getLiveStatus(this.profile.userId)
+      .subscribe(online => {
+        this.isOnline = online;
+      });
   }
 
   private checkFriendship(id: number | null) {
@@ -102,16 +124,16 @@ export class ProfileComponent implements OnInit {
 
   onMouseMove(event: MouseEvent) {
     if (!this.avatarWrapper) return;
-
     const rect = this.avatarWrapper.nativeElement.getBoundingClientRect();
     const x = event.clientX - rect.left;
     const y = event.clientY - rect.top;
-
     const xPercent = Math.round((x / rect.width) * 100);
     const yPercent = Math.round((y / rect.height) * 100);
-
     this.avatarWrapper.nativeElement.style.setProperty('--mouse-x', `${xPercent}%`);
     this.avatarWrapper.nativeElement.style.setProperty('--mouse-y', `${yPercent}%`);
   }
 
+  ngOnDestroy() {
+    this.presenceSubscription?.unsubscribe();
+  }
 }

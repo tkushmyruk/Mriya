@@ -3,11 +3,10 @@
 
     <header class="profile-header">
 
-      <div class="status-indicator">
-        <span class="pulse-dot"></span>
-        <span class="status-text">SYSTEM ACTIVE</span>
+      <div class="status-indicator" [class.is-offline]="!isOnline">
+        <span class="pulse-dot" [class.dot-offline]="!isOnline"></span>
+        <span class="status-text">{{ isOnline ? 'Online' : 'Offline' }}</span>
       </div>
-
       <button *ngIf="isOwner" class="edit-profile-action" routerLink="/profile/edit">
         <span class="icon">⚙️</span>
         <span class="label">Налаштувати</span>
