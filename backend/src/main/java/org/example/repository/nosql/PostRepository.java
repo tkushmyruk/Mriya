@@ -14,7 +14,7 @@ public interface PostRepository extends MongoRepository<Post, String> {
 
     List<Post> findByTagsIn(List<String> tags);
 
-    List<Post> findByOwnerIdAndOwnerType(Long ownerId, OwnerType ownerType);
+    List<Post> findByOwnerIdAndOwnerTypeOrderByCreatedDateDesc(Long ownerId, OwnerType ownerType);
 
     List<Post> findByLikedByContainingOrderByCreatedDateDesc(String userEmail, Pageable pageable);
 
