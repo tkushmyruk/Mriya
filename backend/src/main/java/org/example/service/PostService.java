@@ -77,7 +77,9 @@ public class PostService {
         Query query = new Query(Criteria.where("id").is(postId));
         Post post = mongoTemplate.findOne(query, Post.class);
 
-        if (post == null) throw new RuntimeException("Post not found");
+        if (post == null){
+            throw new RuntimeException("Post not found");
+        }
 
         Update update = new Update();
 
