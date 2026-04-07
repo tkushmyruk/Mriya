@@ -6,10 +6,12 @@ import {filter} from 'rxjs';
 import {NgIf} from '@angular/common';
 import {AuthService} from './components/services/auth.service';
 import {PresenceService} from './components/services/presense.service';
+import {NotificationService} from './components/services/notification.service';
+import {Notification} from './components/notification/notification';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, HeaderComponent, NavBar, NgIf],
+  imports: [RouterOutlet, HeaderComponent, NavBar, NgIf, Notification],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
@@ -21,7 +23,8 @@ export class App implements OnInit{
 
   constructor(private router: Router,
               private authService: AuthService,
-              private presenceService: PresenceService) {
+              private presenceService: PresenceService,
+              private notificationService: NotificationService) {
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe((event: NavigationEnd) => {
@@ -32,6 +35,7 @@ export class App implements OnInit{
 
   ngOnInit() {
     if (this.authService.isLoggedIn()) {
+      this.notificationService.connect();
       const userId = this.authService.getUserId();
       if (userId) {
         this.presenceService.startPresenceHeartbeat(userId).subscribe();

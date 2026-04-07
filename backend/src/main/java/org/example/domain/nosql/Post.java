@@ -33,7 +33,7 @@ public class Post {
     private PostStatus postStatus;
 
     private List<String> mediaUrls;
-    private Set<Integer> likedBy;
+    private Set<Long> likedBy;
     private int likeCount;
 
     private List<String> tags;

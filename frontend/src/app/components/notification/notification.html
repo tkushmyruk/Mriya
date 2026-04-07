@@ -1,0 +1,10 @@
+<div class="toast-container" *ngIf="notification">
+  <div class="toast-card">
+    <div class="toast-icon">❤️</div>
+    <div class="toast-body">
+      <span class="toast-type">{{ notification.type }}</span>
+      <p class="toast-message">{{ notification.message }}</p>
+    </div>
+    <button class="close-btn" (click)="close()">×</button>
+  </div>
+</div>
