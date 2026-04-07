@@ -21,6 +21,6 @@ public class PresenceService {
     }
 
     public boolean isUserOnline(Long userId) {
-        return Boolean.TRUE.equals(redisTemplate.hasKey(PRESENCE_KEY_PREFIX + userId));
+        return redisTemplate.hasKey(PRESENCE_KEY_PREFIX + userId);
     }
 }

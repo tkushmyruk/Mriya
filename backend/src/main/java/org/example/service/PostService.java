@@ -4,11 +4,9 @@ import lombok.AllArgsConstructor;
 import org.example.domain.nosql.OwnerType;
 import org.example.domain.nosql.Post;
 import org.example.domain.nosql.PostStatus;
-import org.example.domain.sql.Profile;
 import org.example.domain.sql.User;
 import org.example.dto.PostCreateRequest;
 import org.example.repository.nosql.PostRepository;
-import org.example.repository.sql.ProfileRepository;
 import org.example.repository.sql.UserRepository;
 import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.data.domain.PageRequest;
@@ -23,8 +21,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -34,6 +30,7 @@ public class PostService {
     private final MongoTemplate mongoTemplate;
     private final UserRepository userRepository;
     private final VectorStore vectorStore;
+    private final NotificationService notificationService;
     // private final KafkaTemplate<String, PostEvent> kafkaTemplate;
 
     public Post createPost(PostCreateRequest request, String userEmail) {
@@ -73,15 +70,15 @@ public class PostService {
     }
 
     public Post toggleLike(String postId, String email) {
-        Long userId = userRepository.findByEmail(email).get().getId();
+        User user = userRepository.findByEmail(email).get();
+        long userId = user.getId();
         Query query = new Query(Criteria.where("id").is(postId));
         Post post = mongoTemplate.findOne(query, Post.class);
 
-        if (post == null){
-            throw new RuntimeException("Post not found");
-        }
+        if (post == null) throw new RuntimeException("Post not found");
 
         Update update = new Update();
+        boolean isLikedNow = false;
 
         if (post.getLikedBy() != null && post.getLikedBy().contains(userId)) {
             update.pull("likedBy", userId);
@@ -89,6 +86,14 @@ public class PostService {
         } else {
             update.push("likedBy", userId);
             update.inc("likesCount", 1);
+            isLikedNow = true;
+        }
+
+        if (isLikedNow && post.getAuthorId() != userId) {
+            notificationService.sendNotification(
+                    post.getAuthorId(), userId
+            );
+
         }
 
         mongoTemplate.updateFirst(query, update, Post.class);
