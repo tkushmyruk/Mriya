@@ -1,9 +1,7 @@
 package org.example.domain.nosql;
 
+import lombok.*;
 import org.springframework.data.annotation.Id;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -15,6 +13,8 @@ import java.util.Set;
 @Document(collection = "posts")
 @Getter
 @Setter
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
 @CompoundIndex(def = "{'ownerId': 1, 'ownerType': 1}")
 public class Post {
@@ -40,7 +40,10 @@ public class Post {
     private Long ownerId;
     private OwnerType ownerType;
 
+    @Builder.Default
     private long likesCount = 0;
+
+    @Builder.Default
     private long commentsCount = 0;
 
     private LocalDateTime createdDate;
