@@ -53,21 +53,40 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
 
   get currentAvatar(): string {
-    return this.profile?.profilePhoto ? this.profile.profilePhoto : 'avatar-default.png';
+    if (this.profile && this.profile.profilePhoto && this.profile.profilePhoto.trim() !== '') {
+      return this.profile.profilePhoto;
+    }
+    return 'avatar-default.png';
   }
 
   onFileSelected(event: any) {
     const file: File = event.target.files[0];
-    if (file) {
-      this.profileService.uploadAvatar(file).subscribe({
-        next: (response) => {
-          if (this.profile) {
-            this.profile.profilePhoto = response.url;
-          }
-        },
-        error: (err) => console.error('Error occured', err)
-      });
-    }
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (e: any) => {
+      if (this.profile) {
+        this.profile = { ...this.profile, profilePhoto: e.target.result };
+      }
+    };
+    reader.readAsDataURL(file);
+
+    this.profileService.uploadAvatar(file).subscribe({
+      next: (response) => {
+        if (this.profile && response.url) {
+          const finalUrl = response.url.includes('?')
+            ? `${response.url}&t=${Date.now()}`
+            : `${response.url}?t=${Date.now()}`;
+
+          this.profile = { ...this.profile, profilePhoto: finalUrl };
+          console.log("Photo updated to:", finalUrl);
+        }
+      },
+      error: (err) => {
+        console.error('Upload failed', err);
+        this.loadMyProfile();
+      }
+    });
   }
 
   private loadMyProfile() {
