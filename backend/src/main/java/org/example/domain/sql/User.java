@@ -35,6 +35,9 @@ public class User implements UserDetails {
     @Column(name = "password")
     private String password;
 
+    @Column(name = "isEnabled")
+    private boolean isEnabled;
+
     @Column(name = "create_date")
     private Timestamp createDate;
 

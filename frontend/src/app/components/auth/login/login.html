@@ -1,7 +1,8 @@
 <div class="login-container">
-  <h2>{{ isLoginMode ? 'Вхід у систему' : 'Реєстрація' }}</h2>
+  <h2 *ngIf="!isVerifyMode">{{ isLoginMode ? 'Вхід у систему' : 'Реєстрація' }}</h2>
+  <h2 *ngIf="isVerifyMode">Підтвердження Email</h2>
 
-  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" *ngIf="!isVerifyMode">
 
     <div *ngIf="!isLoginMode">
       <div class="form-group">
@@ -23,7 +24,6 @@
       <input type="email" formControlName="email" placeholder="Введіть email">
     </div>
 
-
     <div class="form-group">
       <label>Пароль</label>
       <input type="password" formControlName="password" placeholder="Введіть пароль">
@@ -38,6 +38,31 @@
 
       <a href="javascript:void(0)" (click)="toggleMode()">
         {{ isLoginMode ? 'Ще немає акаунту? Реєстрація' : 'Вже є акаунт? Увійти' }}
+      </a>
+    </div>
+  </form>
+
+  <form [formGroup]="verifyForm" (ngSubmit)="onVerifyCode()" *ngIf="isVerifyMode">
+    <p class="info-text">Ми відправили 6-значний код підтвердження на вашу пошту.</p>
+
+    <div class="form-group">
+      <label>Введіть код</label>
+      <input type="text"
+             formControlName="code"
+             placeholder="000000"
+             maxlength="6"
+             class="otp-input"
+             (input)="onCodeInput()"> </div>
+
+    <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
+
+    <div class="actions">
+      <button type="submit" [disabled]="verifyForm.invalid">
+        Підтвердити
+      </button>
+
+      <a href="javascript:void(0)" (click)="backToLogin()">
+        Повернутися назад
       </a>
     </div>
   </form>
