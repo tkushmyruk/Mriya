@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import {AuthService} from '../../services/auth.service';
-import {Router} from '@angular/router';
+import { AuthService } from '../../services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -13,10 +13,17 @@ import {Router} from '@angular/router';
 })
 export class LoginComponent {
   loginForm: FormGroup;
+  verifyForm: FormGroup;
+
   errorMessage: string = '';
   isLoginMode = true;
+  isVerifyMode = false;
 
-  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {
+  constructor(
+    private fb: FormBuilder,
+    private authService: AuthService,
+    private router: Router
+  ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       phone: ['', Validators.pattern(/^\+?\d{10,15}$/)],
@@ -24,38 +31,93 @@ export class LoginComponent {
       firstName: [''],
       lastName: ['']
     });
+
+    this.verifyForm = this.fb.group({
+      code: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(6)]]
+    });
   }
 
   toggleMode() {
     this.isLoginMode = !this.isLoginMode;
+    this.isVerifyMode = false;
     this.errorMessage = '';
 
+    const firstNameControl = this.loginForm.get('firstName');
+    const lastNameControl = this.loginForm.get('lastName');
+
     if (!this.isLoginMode) {
-      this.loginForm.get('firstName')?.setValidators([Validators.required]);
-      this.loginForm.get('lastName')?.setValidators([Validators.required]);
+      firstNameControl?.setValidators([Validators.required]);
+      lastNameControl?.setValidators([Validators.required]);
     } else {
-      this.loginForm.get('firstName')?.clearValidators();
-      this.loginForm.get('lastName')?.clearValidators();
+      firstNameControl?.clearValidators();
+      lastNameControl?.clearValidators();
     }
-    this.loginForm.get('firstName')?.updateValueAndValidity();
-    this.loginForm.get('lastName')?.updateValueAndValidity();
+
+    firstNameControl?.updateValueAndValidity();
+    lastNameControl?.updateValueAndValidity();
   }
 
   onSubmit() {
     if (this.loginForm.invalid) return;
+    this.errorMessage = '';
 
-    const request = this.isLoginMode
-      ? this.authService.login(this.loginForm.value)
-      : this.authService.register(this.loginForm.value);
+    if (this.isLoginMode) {
+      this.handleLogin();
+    } else {
+      this.handleRegister();
+    }
+  }
 
-    request.subscribe({
-      next: (response) => {
-        console.log(this.isLoginMode ? 'Вхід успішний' : 'Реєстрація успішна', response.token);
+  private handleLogin() {
+    this.authService.login(this.loginForm.value).subscribe({
+      next: () => {
         this.router.navigate(['/profile/me']);
       },
       error: (err) => {
-        this.errorMessage = this.isLoginMode ? 'Помилка входу' : 'Помилка реєстрації';
+        if (err.error === 'USER_DISABLED' || err.status === 403) {
+          this.isVerifyMode = true;
+        } else {
+          this.errorMessage = 'Невірний Email або пароль';
+        }
       }
     });
+  }
+
+  private handleRegister() {
+    this.authService.register(this.loginForm.value).subscribe({
+      next: () => {
+        this.isVerifyMode = true;
+      },
+      error: (err) => {
+        this.errorMessage = err.error || 'Помилка реєстрації. Можливо, Email вже зайнятий.';
+      }
+    });
+  }
+
+  onVerifyCode() {
+    if (this.verifyForm.invalid) return;
+
+    const codeValue = this.verifyForm.get('code')?.value;
+
+    this.authService.verifyCode(codeValue).subscribe({
+      next: (res) => {
+        this.router.navigate(['/profile/me']);
+      },
+      error: (err) => {
+        this.errorMessage = err.error || 'Невірний або прострочений код';
+      }
+    });
+  }
+
+  onCodeInput() {
+    const code = this.verifyForm.get('code')?.value;
+    if (code && code.length === 6) {
+      this.onVerifyCode();
+    }
+  }
+
+  backToLogin() {
+    this.isVerifyMode = false;
+    this.errorMessage = '';
   }
 }

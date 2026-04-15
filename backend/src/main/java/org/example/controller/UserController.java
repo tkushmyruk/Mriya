@@ -17,13 +17,24 @@ public class UserController {
     private final PresenceService presenceService;
 
     @PostMapping("/auth/register")
-    public String register(@RequestBody RegisterRequest request) {
-        return userService.register(request);
+    public ResponseEntity<?> register(@RequestBody RegisterRequest request) {
+        userService.register(request);
+        return ResponseEntity.ok(java.util.Map.of("message", "Код надіслано"));
     }
 
     @PostMapping("/auth/authenticate")
-    public AuthenticationResponse authenticate(@RequestBody AuthenticationRequest request) {
-        return userService.authenticate(request);
+    public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest request) {
+        return ResponseEntity.ok(userService.authenticate(request));
+    }
+
+    @PostMapping("/auth/verify")
+    public ResponseEntity<?> verifyCode(@RequestBody String code) {
+        try {
+            AuthenticationResponse response = userService.verify(code);
+            return ResponseEntity.ok(response);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @GetMapping("/{userId}/online")

@@ -12,20 +12,6 @@ export class AuthService {
   constructor(private http: HttpClient,
               private presenceService: PresenceService) {}
 
-  login(credentials: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}auth/authenticate`, credentials).pipe(
-      tap((res: any) => {
-        if (res.token) {
-          localStorage.setItem('access_token', res.token);
-          localStorage.setItem('user_id', res.userId.toString());
-          this.presenceService.startPresenceHeartbeat(res.userId).subscribe();
-
-          console.log("Auth: Logged in as Profile ID:", res.profileId);
-        }
-      })
-    );
-  }
-
   isLoggedIn(): boolean {
     if (isPlatformBrowser(this.platformId)) {
       return !!localStorage.getItem('access_token');
@@ -48,7 +34,31 @@ export class AuthService {
     return null;
   }
 
+
+  private handleAuthSuccess(res: any) {
+    if (res.token) {
+      localStorage.setItem('access_token', res.token);
+      localStorage.setItem('user_id', res.userId.toString());
+      this.presenceService.startPresenceHeartbeat(res.userId).subscribe();
+    }
+  }
+
+  login(credentials: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}auth/authenticate`, credentials).pipe(
+      tap(res => this.handleAuthSuccess(res))
+    );
+  }
+
   register(userData: any): Observable<any> {
     return this.http.post(`${this.apiUrl}auth/register`, userData);
   }
+
+  verifyCode(code: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}auth/verify`, code).pipe(
+      tap(res => this.handleAuthSuccess(res))
+    );
+  }
 }
+
+
+
