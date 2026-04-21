@@ -38,7 +38,7 @@ public class ProfileController {
     }
 
     @GetMapping("/public/user/{userId}")
-    public String getPublicProfileByUserId(@PathVariable long userId) {
+    public Profile getPublicProfileByUserId(@PathVariable long userId) {
         return profileService.getProfileNameByUserId(userId);
     }
 

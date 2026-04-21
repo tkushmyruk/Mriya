@@ -81,3 +81,30 @@
   border-radius: 4px;
   cursor: pointer;
 }
+
+.chat-header {
+  padding: 10px 20px;
+  background: white;
+  border-bottom: 1px solid #ddd;
+  border-radius: 8px 8px 0 0;
+}
+
+.header-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.header-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid #eee;
+}
+
+.header-info h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  color: #333;
+}

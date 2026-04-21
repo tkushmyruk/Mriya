@@ -7,6 +7,7 @@ import { FormsModule } from '@angular/forms';
 import { DatePipe, NgClass, NgForOf, NgIf } from '@angular/common';
 import { Subscription } from 'rxjs';
 import {UserService} from '../services/user.service';
+import {ProfileModel} from '../../profile/model/profile-model';
 
 @Component({
   selector: 'app-chat-component',
@@ -28,7 +29,7 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
   newMessage: string = '';
   targetUserId!: number;
   currentUserId!: number | null;
-  targetUserName: string = 'Завантаження...';
+  targetUserProfile: ProfileModel | undefined;
   private messageSub!: Subscription;
 
   constructor(
@@ -85,13 +86,10 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   private loadTargetUserInfo(): void {
-    this.userService.getUserNameByUserId(this.targetUserId).subscribe({
-      next: (userName) => {
-          this.targetUserName = userName;
+    this.userService.getProfileByUserId(this.targetUserId).subscribe({
+      next: (userProfile) => {
+          this.targetUserProfile = userProfile;
       },
-      error: () => {
-        this.targetUserName = `Користувач #${this.targetUserId}`;
-      }
     });
   }
 
