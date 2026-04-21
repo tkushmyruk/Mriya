@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Підтвердження реєстрації</title>
+</head>
+<body style="margin: 0; padding: 0; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; background-color: #f4f7f9;">
+<table align="center" border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px; background-color: #ffffff; margin-top: 40px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+    <tr>
+        <td align="center" style="padding: 40px 0 20px 0;">
+            <h1 style="color: #2d3436; margin: 0; font-size: 28px; letter-spacing: -1px;">Mriya</h1>
+        </td>
+    </tr>
+    <tr>
+        <td style="padding: 20px 40px; color: #636e72; font-size: 16px; line-height: 1.6;">
+            <p>Привіт!</p>
+            <p>Ти намагаєшся підтвердити свій акаунт. Використай цей код безпеки, щоб завершити реєстрацію:</p>
+        </td>
+    </tr>
+    <tr>
+        <td align="center" style="padding: 20px 0;">
+            <div style="background-color: #f1f2f6; border-radius: 12px; display: inline-block; padding: 15px 40px;">
+                <span style="font-size: 32px; font-weight: bold; letter-spacing: 10px; color: #0984e3;" th:text="${code}">123456</span>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td style="padding: 20px 40px 40px 40px; color: #b2bec3; font-size: 13px; text-align: center; line-height: 1.4;">
+            <p>Цей код дійсний протягом 10 хвилин. Якщо ти не надсилав запит, просто ігноруй цей лист.</p>
+            <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
+            <p style="margin: 0;">&copy; 2026 Mriya Project. Developed with ❤️</p>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

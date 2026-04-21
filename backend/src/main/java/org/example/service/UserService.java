@@ -1,5 +1,7 @@
 package org.example.service;
 
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.example.domain.nosql.Post;
@@ -19,12 +21,15 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
 
 import java.time.LocalDateTime;
 import java.util.Random;
@@ -39,6 +44,7 @@ public class UserService {
     private final ProfileService profileService;
     private final JavaMailSender mailSender;
     private final VerificationCodeRepository codeRepository;
+    private final TemplateEngine templateEngine;
 
     private final MongoTemplate mongoTemplate;
 
@@ -63,7 +69,7 @@ public class UserService {
     }
 
     @Transactional
-    public void register(RegisterRequest request) {
+    public void register(RegisterRequest request) throws MessagingException {
         Profile profile = Profile.builder()
                 .firstName(request.getFirstName())
                 .lastName(request.getLastName())
@@ -119,7 +125,7 @@ public class UserService {
 
     @Async
     @Transactional
-    public void sendVerificationCode(User user) {
+    public void sendVerificationCode(User user) throws MessagingException {
         String code = String.format("%06d", new Random().nextInt(1000000));
 
         VerificationCode verificationCode = codeRepository.findByUserId(user.getId()).orElse(new VerificationCode());
@@ -130,14 +136,21 @@ public class UserService {
 
         codeRepository.save(verificationCode);
 
-        sendEmail(user.getEmail(), code);
+        sendVerificationEmail(user.getEmail(), code);
     }
 
-    private void sendEmail(String email, String code) {
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo(email);
-        message.setSubject("Mriya: Ваш код підтвердження");
-        message.setText("Ваш код для реєстрації: " + code + ". Він дійсний 15 хвилин.");
-        mailSender.send(message);
+    public void sendVerificationEmail(String to, String code) throws MessagingException {
+        Context context = new Context();
+        context.setVariable("code", code);
+
+        String process = templateEngine.process("verification-email", context);
+        MimeMessage mimeMessage = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
+
+        helper.setSubject("Ваш код підтвердження Mriya");
+        helper.setText(process, true);
+        helper.setTo(to);
+
+        mailSender.send(mimeMessage);
     }
 }

@@ -1,5 +1,6 @@
 package org.example.controller;
 
+import jakarta.mail.MessagingException;
 import lombok.AllArgsConstructor;
 import org.example.dto.AuthenticationRequest;
 import org.example.dto.AuthenticationResponse;
@@ -17,7 +18,7 @@ public class UserController {
     private final PresenceService presenceService;
 
     @PostMapping("/auth/register")
-    public ResponseEntity<?> register(@RequestBody RegisterRequest request) {
+    public ResponseEntity<?> register(@RequestBody RegisterRequest request) throws MessagingException {
         userService.register(request);
         return ResponseEntity.ok(java.util.Map.of("message", "Код надіслано"));
     }
