@@ -1,6 +1,11 @@
 <div class="chat-wrapper">
   <div class="chat-header">
-    <h3>Чат із користувачем {{ targetUserName }} </h3>
+    <div class="header-info">
+      <img [src]="targetUserProfile?.profilePhoto || 'assets/default-avatar.png'"
+           class="header-avatar"
+           alt="avatar">
+      <h3>{{ targetUserProfile?.firstName }} {{ targetUserProfile?.lastName }}</h3>
+    </div>
   </div>
 
   <div class="messages-container" #scrollContainer>

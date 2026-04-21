@@ -21,10 +21,8 @@ public class ProfileService {
         return profileRepository.findById(id).orElse(null);
     }
 
-    public String getProfileNameByUserId(Long userId) {
-        Profile profile = profileRepository.findById(userId).get();
-        return profile.getFirstName() + " " + profile.getLastName();
-
+    public Profile getProfileNameByUserId(Long userId) {
+        return profileRepository.findById(userId).get();
     }
 
     public List<Profile> search(String query) {

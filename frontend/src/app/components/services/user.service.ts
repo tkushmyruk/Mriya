@@ -1,6 +1,7 @@
 import {HttpClient} from '@angular/common/http';
 import {catchError, Observable, throwError} from 'rxjs';
 import {Injectable} from '@angular/core';
+import {ProfileModel} from '../../profile/model/profile-model';
 
 @Injectable({
   providedIn: 'root'
@@ -18,12 +19,8 @@ export class UserService {
     return this.http.put(`${this.apiUrl}/profile/update`, data);
   }
 
-  getUserNameByUserId(userId: number): Observable<string> {
-    return this.http.get(`${this.apiUrl}/profile/public/user/${userId}`, { responseType: 'text' }).pipe(
-      catchError(error => {
-        console.error(`Помилка завантаження користувача ${userId}:`, error);
-        return throwError(() => new Error('Не вдалося завантажити дані користувача'));
-      })
+  getProfileByUserId(userId: number): Observable<ProfileModel> {
+    return this.http.get<ProfileModel>(`${this.apiUrl}/profile/public/user/${userId}`).pipe(
     );
   }
 }
